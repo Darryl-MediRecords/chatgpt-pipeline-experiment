@@ -3,16 +3,13 @@ on:
     types: [opened, synchronize] # Run the workflow when pull request is opened or synchronized
 
 jobs:
-  hello_world_job: # Define the job
+  chatgpt-analysis: # Define the job
     runs-on: ubuntu-latest # Specify the runner to run the job on
     name: ChatGPT explain code # Job name
     steps:
       - name: ChatGPT explain code # Step name
-        uses: Darryl-MediRecords/chatgpt-pipeline-experiment@1.0.2 # Use the ChatGPT Github Actions from cirolini repository
+        uses: Darryl-MediRecords/chatgpt-pipeline-experiment@1.0.3 # Use the ChatGPT Github Actions from cirolini repository
         with:
           openai_api_key: ${{ secrets.OPENAI_API_KEY }} # Get the OpenAI API key from repository secrets
           github_token: ${{ secrets.DARRYL_GITHUB_TOKEN }} # Get the Github Token from repository secrets
           github_pr_id: ${{ github.event.number }} # Get the Github Pull Request ID from the Github event
-          openai_engine: "text-davinci-002" # Optional: specify the OpenAI engine to use. Default is "text-davinci-002"
-          openai_temperature: 0.5 # Optional: specify the sampling temperature for OpenAI. Default is 0.5
-          openai_max_tokens: 2048 # Optional: specify the maximum number of tokens to generate in OpenAI completion. Default is 2048
