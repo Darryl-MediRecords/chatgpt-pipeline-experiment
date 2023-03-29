@@ -26,7 +26,6 @@ g = Github(args.github_token)
 
 
 def files():
-    print(g)
     repo = g.get_repo(os.getenv('GITHUB_REPOSITORY'))
     pull_request = repo.get_pull(int(args.github_pr_id))
 
@@ -47,8 +46,6 @@ def files():
                 temperature=float(args.openai_temperature),
                 max_tokens=int(args.openai_max_tokens)
             )
-
-            print(f"ChatGPT's response about `{file.filename}`:\n {response['choices'][0]['text']}")
 
             # Adding a comment to the pull request with ChatGPT's response
             pull_request.create_issue_comment(
@@ -108,9 +105,6 @@ def get_content_patch():
 
     return response.text
 
-print("main.py is running")
-print(args)
-print(args.mode)
 
 if (args.mode == "files"):
     files()
