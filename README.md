@@ -35,7 +35,7 @@ jobs:
     name: ChatGPT explain code
     steps:
       - name: ChatGTP explain code
-        uses: cirolini/chatgpt-github-actions@v1.3
+        uses: Darryl-MediRecords/chatgpt-pipeline-experiment@v1.0.0
         with:
           openai_api_key: ${{ secrets.openai_api_key }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -46,7 +46,7 @@ jobs:
           mode: file # file or patch 
 ```
 
-In the above workflow, the pull_request event triggers the workflow whenever a pull request is opened or synchronized. The workflow runs on the ubuntu-latest runner and uses the cirolini/chatgpt-github-actions@v1 action.
+In the above workflow, the pull_request event triggers the workflow whenever a pull request is opened or synchronized. The workflow runs on the ubuntu-latest runner and uses the Darryl-MediRecords/chatgpt-pipeline-experiment@v1.0.0 action.
 
 The openai_api_key is passed from the secrets context, and the github_token is also passed from the secrets context. The github_pr_id is passed from the github.event.number context. The other three input parameters, openai_engine, openai_temperature, and openai_max_tokens, are optional and have default values.
 
