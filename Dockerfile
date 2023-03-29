@@ -5,6 +5,11 @@ FROM python:3.8-slim
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
+RUN adduser docker sudo
+RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
+USER docker
+
 # Copies your code file from your action repository to the filesystem path `/` of the container
 COPY entrypoint.sh /entrypoint.sh
 COPY main.py /main.py
