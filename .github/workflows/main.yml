@@ -8,10 +8,10 @@ jobs:
     name: ChatGPT explain code # Job name
     steps:
       - name: ChatGPT explain code # Step name
-        uses: cirolini/chatgpt-github-actions@v1.2 # Use the ChatGPT Github Actions from cirolini repository
+        uses: Darryl-MediRecords/chatgpt-pipeline-experiment@1.0.1 # Use the ChatGPT Github Actions from cirolini repository
         with:
-          openai_api_key: ${{ secrets.openai_api_key }} # Get the OpenAI API key from repository secrets
-          github_token: ${{ secrets.GITHUB_TOKEN }} # Get the Github Token from repository secrets
+          openai_api_key: ${{ secrets.OPENAI_API_KEY }} # Get the OpenAI API key from repository secrets
+          github_token: ${{ secrets.DARRYL_GITHUB_TOKEN }} # Get the Github Token from repository secrets
           github_pr_id: ${{ github.event.number }} # Get the Github Pull Request ID from the Github event
           openai_engine: "text-davinci-002" # Optional: specify the OpenAI engine to use. Default is "text-davinci-002"
           openai_temperature: 0.5 # Optional: specify the sampling temperature for OpenAI. Default is 0.5
