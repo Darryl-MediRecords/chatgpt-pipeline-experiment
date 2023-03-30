@@ -3,7 +3,6 @@
 This project aims to automate code review using the ChatGPT language model. It integrates  with Github Actions, and upon receiving a Pull Request, it automatically sends each code review to ChatGPT for an explanation.
 
 # Setup
-Sample setup
 The following steps will guide you in setting up the code review automation with ChatGPT.
 
 ## Prerequisites
