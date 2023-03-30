@@ -22,12 +22,10 @@ openai.api_key = args.openai_api_key
 
 ## Authenticating with the Github API
 g = Github(args.github_token)
-
+repo = g.get_repo(os.getenv('GITHUB_REPOSITORY'))
+pull_request = repo.get_pull(int(args.github_pr_id))
 
 def files():
-    repo = g.get_repo(os.getenv('GITHUB_REPOSITORY'))
-    pull_request = repo.get_pull(int(args.github_pr_id))
-
     ## Loop through the commits in the pull request
     commits = pull_request.get_commits()
     for commit in commits:
@@ -54,9 +52,6 @@ def files():
 
 
 def patch():
-    repo = g.get_repo(os.getenv('GITHUB_REPOSITORY'))
-    pull_request = repo.get_pull(int(args.github_pr_id))
-
     content = get_content_patch()
 
     if len(content) == 0:
@@ -106,7 +101,34 @@ def get_content_patch():
 
     return response.text
 
+def get_controllers():
+    content = get_content_patch()
+
+    if len(content) == 0:
+        pull_request.create_issue_comment(f"Patch file does not contain any changes")
+        return
+
+    parsed_text = content.split("diff")
+
+    for diff_text in parsed_text:
+        print("\n")
+        print(diff_text)
+        print("\n")
+        if len(diff_text) == 0:
+            continue
+
+        try:
+            file_name = diff_text.split("b/")[1].splitlines()[0]
+            print("File name: {file_name}")
+
+        except Exception as e:
+            error_message = str(e)
+            print(error_message)
+            pull_request.create_issue_comment(f"ChatGPT was unable to process the response about {file_name}")
+
+
 print("main.py is running")
 print(args)
 
 patch()
+get_controllers()
