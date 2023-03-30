@@ -125,7 +125,6 @@ def get_controllers():
 
 
 print("main.py is running")
-print(args)
 
 patch()
 get_controllers()
