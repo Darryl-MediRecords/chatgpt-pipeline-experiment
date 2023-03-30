@@ -109,4 +109,4 @@ def get_content_patch():
 print("main.py is running")
 print(args)
 
-files()
+patch()
