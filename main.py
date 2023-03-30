@@ -143,7 +143,7 @@ def create_stoplight_doc():
             is_controller = file_name.endswith("Controller.java")
             print(f"Contains Controller.java: {is_controller}")
             if is_controller:
-                send_to_chat_gpt("Create a stoplight documentation", file_name, diff_text)
+                send_to_chat_gpt("Create a stoplight documentation in a yaml file", file_name, diff_text)
 
         except Exception as e:
             error_message = str(e)
