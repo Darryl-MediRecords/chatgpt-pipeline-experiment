@@ -25,7 +25,6 @@ g = Github(args.github_token)
 
 
 def files():
-    print(g)
     repo = g.get_repo(os.getenv('GITHUB_REPOSITORY'))
     pull_request = repo.get_pull(int(args.github_pr_id))
 
@@ -111,8 +110,7 @@ print("main.py is running")
 print(args)
 print(args.mode)
 
-if (args.mode == "files"):
-    files()
+files()
 
 if (args.mode == "patch"):
     patch()
