@@ -108,9 +108,5 @@ def get_content_patch():
 
 print("main.py is running")
 print(args)
-print(args.mode)
 
 files()
-
-if (args.mode == "patch"):
-    patch()
