@@ -25,6 +25,26 @@ g = Github(args.github_token)
 repo = g.get_repo(os.getenv('GITHUB_REPOSITORY'))
 pull_request = repo.get_pull(int(args.github_pr_id))
 
+# The send_to_chat_gpt function takes three arguments:
+#
+# command: a string that represents the command or action to be performed
+# file_name: a string that represents the name of the file
+# file_content: a string that represents the content of the file
+# The function makes use of the OpenAI API by calling the openai.Completion.create() method.
+# The output of the function is a string that represents ChatGPT's response about the file.
+def send_to_chat_gpt(command, file_name, file_content):
+    response = openai.Completion.create(
+        engine=args.openai_engine,
+        prompt=(f"{command}:\n```{file_content}```"),
+        temperature=float(args.openai_temperature),
+        max_tokens=int(args.openai_max_tokens)
+    )
+
+    # Adding a comment to the pull request with ChatGPT's response
+    pull_request.create_issue_comment(
+        f"ChatGPT's response about `{file_name}`:\n {response['choices'][0]['text']}")
+
+
 def files():
     ## Loop through the commits in the pull request
     commits = pull_request.get_commits()
@@ -36,19 +56,20 @@ def files():
             filename = file.filename
             content = repo.get_contents(filename, ref=commit.sha).decoded_content
 
-            # Sending the code to ChatGPT
-            response = openai.Completion.create(
-                engine=args.openai_engine,
-                prompt=(f"Explain Code:\n```{content}```"),
-                temperature=float(args.openai_temperature),
-                max_tokens=int(args.openai_max_tokens)
-            )
+            send_to_chat_gpt("ChatGPT's response about", filename, content)
+            # # Sending the code to ChatGPT
+            # response = openai.Completion.create(
+            #     engine=args.openai_engine,
+            #     prompt=(f"Explain Code:\n```{content}```"),
+            #     temperature=float(args.openai_temperature),
+            #     max_tokens=int(args.openai_max_tokens)
+            # )
 
-            print(f"ChatGPT's response about `{file.filename}`:\n {response['choices'][0]['text']}")
+            # print(f"ChatGPT's response about `{file.filename}`:\n {response['choices'][0]['text']}")
 
-            # Adding a comment to the pull request with ChatGPT's response
-            pull_request.create_issue_comment(
-                f"ChatGPT's response about `{file.filename}`:\n {response['choices'][0]['text']}")
+            # # Adding a comment to the pull request with ChatGPT's response
+            # pull_request.create_issue_comment(
+            #     f"ChatGPT's response about `{file.filename}`:\n {response['choices'][0]['text']}")
 
 
 def patch():
@@ -66,19 +87,18 @@ def patch():
 
         try:
             file_name = diff_text.split("b/")[1].splitlines()[0]
-            print(file_name)
+            
+            send_to_chat_gpt("Summarize what was done in this diff", file_name, diff_text)
+            
+            # response = openai.Completion.create(
+            #     engine=args.openai_engine,
+            #     prompt=(f"Summarize what was done in this diff:\n```{diff_text}```"),
+            #     temperature=float(args.openai_temperature),
+            #     max_tokens=int(args.openai_max_tokens)
+            # )
 
-            response = openai.Completion.create(
-                engine=args.openai_engine,
-                prompt=(f"Summarize what was done in this diff:\n```{diff_text}```"),
-                temperature=float(args.openai_temperature),
-                max_tokens=int(args.openai_max_tokens)
-            )
-            print(response)
-            print(response['choices'][0]['text'])
-
-            pull_request.create_issue_comment(
-                f"ChatGPT's response about ``{file_name}``:\n {response['choices'][0]['text']}")
+            # pull_request.create_issue_comment(
+            #     f"ChatGPT's response about ``{file_name}``:\n {response['choices'][0]['text']}")
         except Exception as e:
             error_message = str(e)
             print(error_message)
@@ -101,11 +121,11 @@ def get_content_patch():
 
     return response.text
 
-def get_controllers():
+def create_stoplight_doc():
     content = get_content_patch()
 
     if len(content) == 0:
-        pull_request.create_issue_comment(f"Patch file does not contain any changes")
+        pull_request.create_issue_comment("Patch file does not contain any changes")
         return
 
     parsed_text = content.split("diff")
@@ -116,7 +136,11 @@ def get_controllers():
 
         try:
             file_name = diff_text.split("b/")[1].splitlines()[0]
-            print("File name: {file_name}")
+            print(f"File name: {file_name}")
+            is_controller = file_name.endswith("Controller.java")
+            print(f"Contains Controller.java: {is_controller}")
+            if is_controller:
+                send_to_chat_gpt("Create a stoplight documentation", file_name, diff_text)
 
         except Exception as e:
             error_message = str(e)
@@ -127,4 +151,4 @@ def get_controllers():
 print("main.py is running")
 
 patch()
-get_controllers()
+create_stoplight_doc()
