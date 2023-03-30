@@ -33,12 +33,15 @@ pull_request = repo.get_pull(int(args.github_pr_id))
 # The function makes use of the OpenAI API by calling the openai.Completion.create() method.
 # The output of the function is a string that represents ChatGPT's response about the file.
 def send_to_chat_gpt(command, file_name, file_content):
+    print(f"Command sent to chatgpt:\n\n{command}:\n```{file_content}```\n")
     response = openai.Completion.create(
         engine=args.openai_engine,
         prompt=(f"{command}:\n```{file_content}```"),
         temperature=float(args.openai_temperature),
         max_tokens=int(args.openai_max_tokens)
     )
+    print(f"Raw Response: \n{response}\n")
+    print(f"Result from chat gpt:\n\n{file_name}`:\n {response['choices'][0]['text']}\n")
 
     # Adding a comment to the pull request with ChatGPT's response
     pull_request.create_issue_comment(
