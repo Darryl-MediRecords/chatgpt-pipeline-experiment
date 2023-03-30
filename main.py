@@ -111,9 +111,6 @@ def get_controllers():
     parsed_text = content.split("diff")
 
     for diff_text in parsed_text:
-        print("\n")
-        print(diff_text)
-        print("\n")
         if len(diff_text) == 0:
             continue
 
