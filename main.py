@@ -96,10 +96,10 @@ def push_changed_files_to_pr(file_changes):
     dir_contents = repo.get_contents("", branch.sha)
 
     for file in file_changes:
+        file_name = file["name"]
         try:
             # Find the existing file
             existing_file = repo.get_contents(file["name"], branch.sha)
-            file_name = file["name"]
             # Update file
             repo.update_file(
                 path=file_name,
