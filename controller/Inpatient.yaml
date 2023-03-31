@@ -1,0 +1,103 @@
+
+
+---
+stoplight:
+  version: "1.0"
+  info:
+    title: InpatientController
+    description: This API provides methods to get information about user and tenant.
+    contact:
+      name: MediRecords
+      url: https://medirecords.com
+      email: support@medirecords.com
+  security:
+    - ApiKeyAuth: []
+  paths:
+    /hello:
+      get:
+        summary: Returns hello message
+        operationId: hello
+        parameters:
+          - name: name
+            in: query
+            description: Name of the user
+            required: false
+            type: string
+            default: stranger
+        responses:
+          200:
+            description: Successful response
+            schema:
+              type: string
+    /helloUserInfo:
+      get:
+        summary: Returns user info
+        operationId: helloUserInfo
+        parameters:
+          - name: name
+            in: query
+            description: Name of the user
+            required: false
+            type: string
+            default: stranger
+        responses:
+          200:
+            description: Successful response
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                userName:
+                  type: string
+                tenantId:
+                  type: string
+                tenantName:
+                  type: string
+    /helloFeign:
+      get:
+        summary: Returns info from MRApp Client
+        operationId: helloFeign
+        parameters:
+          - name: pageable
+            in: query
+            description: Pageable object
+            required: true
+            type: object
+            schema:
+              type: object
+              properties:
+                page:
+                  type: integer
+                size:
+                  type: integer
+        responses:
+          200:
+            description: Successful response
+            schema:
+              type: string
+    /helloFeatureToggle:
+      get:
+        summary: Returns feature toggle status
+        operationId: helloFeatureToggle
+        parameters:
+          - name: tenantId
+            in: query
+            description: Tenant ID
+            required: true
+            type: string
+          - name: featureName
+            in: query
+            description: Feature name
+            required: true
+            type: string
+          - name: userId
+            in: query
+            description: User ID
+            required: true
+            type: string
+        responses:
+          200:
+            description: Successful response
+            schema:
+              type: boolean
