@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: Check for "generate stoplight" comment
         run: |
-          if echo "${{ github.event.comment.body }}" | grep -q "generate stoplight"; then
+          if grep -q "generate stoplight"; then
             echo "Comment matched"
           else
             echo "Comment did not match"
