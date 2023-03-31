@@ -1,0 +1,73 @@
+
+
+---
+stoplight:
+  version: "1.0"
+  info:
+    title: Inpatient API
+    description: An API for retrieving inpatient data.
+    termsOfService: https://example.com/terms
+    contact:
+      name: API Support
+      url: http://www.example.com/support
+      email: support@example.com
+    license:
+      name: Apache 2.0
+      url: https://www.apache.org/licenses/LICENSE-2.0.html
+    version: 1.0.0
+  servers:
+    - url: https://example.com/api
+  paths:
+    /v1/api/hello:
+      get:
+        summary: Get hello message
+        parameters:
+          - name: name
+            in: query
+            description: Name of the user
+            required: false
+            schema:
+              type: string
+        responses:
+          '200':
+            description: Success
+          '400':
+            description: Bad Request
+    /v1/api/helloUserInfo:
+      get:
+        summary: Get user info
+        parameters:
+          - name: name
+            in: query
+            description: Name of the user
+            required: false
+            schema:
+              type: string
+        responses:
+          '200':
+            description: Success
+          '400':
+            description: Bad Request
+    /v1/api/helloFeign:
+      get:
+        summary: Get hello message from Feign
+        parameters:
+          - name: pageable
+            in: query
+            description: Pageable object
+            required: true
+            schema:
+              type: object
+        responses:
+          '200':
+            description: Success
+          '400':
+            description: Bad Request
+    /v1/api/helloFeatureToggle:
+      get:
+        summary: Get feature toggle from Feign
+        responses:
+          '200':
+            description: Success
+          '400':
+            description: Bad Request
