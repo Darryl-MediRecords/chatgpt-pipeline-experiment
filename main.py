@@ -24,10 +24,8 @@ openai.api_key = args.openai_api_key
 g = Github(args.github_token)
 repo = g.get_repo(os.getenv('GITHUB_REPOSITORY'))
 pull_request = repo.get_pull(int(args.github_pr_id))
-branch = pull_request.head.ref
+branch = pull_request.head
 CONTROLLER = "Controller.java"
-print(pull_request.head)
-print(branch)
 
 # The send_to_chat_gpt function takes three arguments:
 #
@@ -95,12 +93,12 @@ def get_content_patch():
 
 def push_changed_files_to_pr(file_changes):
 
-    dir_contents = repo.get_contents("", branch.commit.sha)
+    dir_contents = repo.get_contents("", branch.sha)
 
     for file in file_changes:
         try:
             # Find the existing file
-            existing_file = repo.get_contents(file["name"], branch.commit.sha)
+            existing_file = repo.get_contents(file["name"], branch.sha)
             file_name = file["name"]
             # Update file
             repo.update_file(
@@ -108,7 +106,7 @@ def push_changed_files_to_pr(file_changes):
                 message="Chore: update generated stoplight files",
                 content=file["content"],
                 sha= existing_file.sha,
-                branch=branch.name
+                branch=branch.ref
             )
             
             print(f"Existing file url: {existing_file.html_url}")
@@ -119,7 +117,7 @@ def push_changed_files_to_pr(file_changes):
                 path=file_name,
                 message=f"Chore: add generated stoplight file {file_name}",
                 content=file["content"],
-                branch=branch.name,
+                branch=branch.sha,
                 sha=dir_contents.sha
             )
 
