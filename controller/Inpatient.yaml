@@ -2,11 +2,9 @@
 
 
 ---
-title: Inpatient Controller
-summary: This page describes the Inpatient Controller API.
----
-# Inpatient Controller API
+
+# InpatientController
 
 ## Overview
 
-This API provides an interface for interacting with the Inpatient Controller. It allows for retrieving user information, making requests to the mrapp client, and checking tenant configurations with the feature toggle microservice client.```
+This API provides endpoints for retrieving user information, interacting with a Feign client, and checking tenant configurations with a feature toggle microservice.```
