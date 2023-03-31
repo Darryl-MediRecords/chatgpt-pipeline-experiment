@@ -1,0 +1,86 @@
+
+
+---
+title: InpatientController
+description: A controller for Inpatient API
+stoplight:
+  version: 0.0.1
+  uid: inpatientcontroller
+info:
+  title: InpatientController
+  description: A controller for Inpatient API
+  version: 0.0.1
+  termsOfService: https://example.com/terms
+  contact:
+    name: API Support
+    url: https://example.com/support
+    email: support@example.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+paths:
+  /v1/api/hello:
+    get:
+      summary: Get hello message
+      description: Get hello message from Template Microservice
+      parameters:
+        - in: query
+          name: name
+          description: Name of the user
+          required: false
+          type: string
+          default: stranger
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: string
+  /v1/api/helloUserInfo:
+    get:
+      summary: Get UserInfo
+      description: Get UserInfo from Template Microservice
+      parameters:
+        - in: query
+          name: name
+          description: Name of the user
+          required: false
+          type: string
+          default: stranger
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            properties:
+              userId:
+                type: string
+              userName:
+                type: string
+              tenantId:
+                type: string
+              tenantName:
+                type: string
+  /v1/api/helloFeign:
+    get:
+      summary: Get Hello Feign
+      description: Get Hello Feign from Template Microservice
+      parameters:
+        - in: query
+          name: pageable
+          description: Pageable for the request
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+  /v1/api/helloFeatureToggle:
+    get:
+      summary: Get Hello Feature Toggle
+      description: Get Hello Feature Toggle from Template Microservice
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: boolean
