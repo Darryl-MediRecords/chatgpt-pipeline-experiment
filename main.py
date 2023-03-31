@@ -93,10 +93,10 @@ def get_content_patch():
 
 def push_changed_files_to_pr(file_changes):
 
-    dir_contents = repo.get_contents("", branch.sha)
-    print("dir_contents")
-    print(dir_contents)
-    print ('\n'.join(str(p.sha) for p in dir_contents))
+    # dir_contents = repo.get_contents("")
+    # print("dir_contents")
+    # print(dir_contents)
+    # print ('\n'.join(str(p.sha) for p in dir_contents))
 
     for file in file_changes:
         file_name = file["name"]
@@ -120,8 +120,7 @@ def push_changed_files_to_pr(file_changes):
                 path=file_name,
                 message=f"Chore: add generated stoplight file {file_name}",
                 content=file["content"],
-                branch=branch.sha,
-                sha=dir_contents.sha
+                branch=branch.ref
             )
 
             print(f"New file url: {new_file.html_url}")
