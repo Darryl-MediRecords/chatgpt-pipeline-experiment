@@ -50,7 +50,7 @@ def send_to_chat_gpt(command, file_name, file_content):
     pull_request.create_issue_comment(
         f"ChatGPT's response about `{file_name}`:\n {response_content}")
     
-    return {response['choices'][0]['text']}
+    return response['choices'][0]['text']
 
 def patch():
     content = get_content_patch()
@@ -102,7 +102,7 @@ def push_changed_files_to_pr(file_changes):
             # Update file
             repo.update_file(
                 path=filename,
-                message="Chore: update generated stoplight files",
+                message=f"Chore: update generated stoplight {filename}",
                 content=file["content"],
                 sha= existing_file.sha,
                 branch=branch.ref
@@ -137,7 +137,7 @@ def create_stoplight_doc():
             is_controller = file_name.endswith(CONTROLLER)
             print(f"Contains Controller.java: {is_controller}")
             if is_controller:
-                response = send_to_chat_gpt("Generate a Stoplight documentation in raw YAML file format where the info description explains the overview of the api", file_name, diff_text)
+                response = send_to_chat_gpt("Generate a Stoplight documentation in raw YAML file format", file_name, diff_text)
                 yaml_name = file_name.replace(CONTROLLER, "")
                 file_changes.append({ "name": yaml_name, "content": response })
 
