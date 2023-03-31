@@ -1,16 +1,28 @@
+# on:
+#   pull_request: # Trigger the workflow on pull request events
+#     types: [opened, synchronize] # Run the workflow when pull request is opened or synchronized
 on:
-  pull_request: # Trigger the workflow on pull request events
-    types: [opened, synchronize] # Run the workflow when pull request is opened or synchronized
+  issue_comment:
+    types: [created]
     paths:
       - '**/*Controller.java'
       - '!**/*.yaml'
-      - '!**.yaml'
 
 jobs:
   chatgpt-analysis: # Define the job
     runs-on: ubuntu-latest # Specify the runner to run the job on
     name: ChatGPT explain code # Job name
+    if: github.event.issue.pull_request
     steps:
+      - name: Check for "generate stoplight" comment
+        run: |
+          if echo "${{ github.event.comment.body }}" | grep -q "generate stoplight"; then
+            echo "Comment matched"
+          else
+            echo "Comment did not match"
+            exit 1
+          fi
+
       - name: ChatGPT explain code # Step name
         uses: Darryl-MediRecords/chatgpt-pipeline-experiment@1.0.9
         with:

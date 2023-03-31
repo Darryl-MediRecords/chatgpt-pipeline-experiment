@@ -101,7 +101,7 @@ def push_changed_files_to_pr(file_changes):
             # Update file
             repo.update_file(
                 path=filename,
-                message="Chore: update generated stoplight files",
+                message=f"Chore: update generated stoplight {filename}",
                 content=file["content"],
                 sha= existing_file.sha,
                 branch=branch.ref
