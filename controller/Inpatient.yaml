@@ -1,0 +1,21 @@
+```yaml
+
+
+---
+
+# Overview
+This API provides endpoints for retrieving user information, making calls to other microservices, and checking feature toggle configurations.
+
+# Endpoints
+
+## `GET /hello`
+Retrieves a greeting message with the user's tenant and user information.
+
+## `GET /helloUserInfo`
+Retrieves user information as a `UserInfoDTO` object.
+
+## `GET /helloFeign`
+Makes a call to the `MrappClient` microservice and retrieves the response.
+
+## `GET /helloFeatureToggle`
+Checks the feature toggle configuration for the specified tenant and returns a boolean value.```
