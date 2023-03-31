@@ -1,0 +1,7 @@
+```yaml
+
+
+# InpatientController
+
+## Overview
+This controller is responsible for providing endpoints for the Inpatient API. It contains methods for retrieving user information, making requests to other microservices, and checking tenant configurations.```
