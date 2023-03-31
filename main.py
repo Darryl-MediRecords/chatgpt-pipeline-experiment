@@ -26,6 +26,8 @@ repo = g.get_repo(os.getenv('GITHUB_REPOSITORY'))
 pull_request = repo.get_pull(int(args.github_pr_id))
 branch = pull_request.head.ref
 CONTROLLER = "Controller.java"
+print(pull_request.head)
+print(branch)
 
 # The send_to_chat_gpt function takes three arguments:
 #
