@@ -43,13 +43,14 @@ def send_to_chat_gpt(command, file_name, file_content):
         max_tokens=int(args.openai_max_tokens)
     )
     print(f"Raw Response: \n{response}\n")
-    print(f"Result from chat gpt:\n\n{file_name}`:\n {response['choices'][0]['text']}\n")
+    response_content = f"```yaml\n{response['choices'][0]['text']}```"
+    print(f"Result from chat gpt:\n\n{file_name}`:\n {response_content}\n")
 
     # Adding a comment to the pull request with ChatGPT's response
     pull_request.create_issue_comment(
-        f"ChatGPT's response about `{file_name}`:\n {response['choices'][0]['text']}")
+        f"ChatGPT's response about `{file_name}`:\n {response_content}")
     
-    return response['choices'][0]['text']
+    return response_content
 
 def patch():
     content = get_content_patch()
@@ -136,7 +137,7 @@ def create_stoplight_doc():
             is_controller = file_name.endswith(CONTROLLER)
             print(f"Contains Controller.java: {is_controller}")
             if is_controller:
-                response = send_to_chat_gpt("generate a stoplight documentation in YAML file format where the info description explains the overview of the api", file_name, diff_text)
+                response = send_to_chat_gpt("Generate a Stoplight documentation in Stoplight YAML file format where the info description explains the overview of the api", file_name, diff_text)
                 yaml_name = file_name.replace(CONTROLLER, "")
                 file_changes.append({ "name": yaml_name, "content": response })
 
