@@ -1,0 +1,96 @@
+
+
+---
+stoplight:
+  version: 1.0
+  info:
+    title: Template Microservice API
+    description: API for the Template Microservice
+    termsOfService: https://stoplight.io/policies/terms/
+    contact:
+      name: Stoplight
+      url: https://stoplight.io
+      email: support@stoplight.io
+    license:
+      name: Apache 2.0
+      url: https://www.apache.org/licenses/LICENSE-2.0.html
+  servers:
+    - url: https://template.io/api
+  paths:
+    /v1/api/hello:
+      get:
+        summary: Get a hello message
+        operationId: hello
+        parameters:
+          - name: name
+            in: query
+            description: Name of the person
+            required: false
+            schema:
+              type: string
+              default: stranger
+        responses:
+          '200':
+            description: Hello message
+            content:
+              application/json:
+                schema:
+                  type: string
+    /v1/api/helloUserInfo:
+      get:
+        summary: Get a hello message with user info
+        operationId: helloUserInfo
+        parameters:
+          - name: name
+            in: query
+            description: Name of the person
+            required: false
+            schema:
+              type: string
+              default: stranger
+        responses:
+          '200':
+            description: Hello message with user info
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    userId:
+                      type: string
+                    userName:
+                      type: string
+                    tenantId:
+                      type: string
+                    tenantName:
+                      type: string
+    /v1/api/helloFeign:
+      get:
+        summary: Get a hello message from feign client
+        operationId: helloFeign
+        parameters:
+          - name: page
+            in: query
+            description: Page number
+            required: false
+            schema:
+              type: integer
+              default: 1
+        responses:
+          '200':
+            description: Hello message from feign client
+            content:
+              application/json:
+                schema:
+                  type: string
+    /v1/api/helloFeatureToggle:
+      get:
+        summary: Get a hello message from feature toggle microservice
+        operationId: helloFeatureToggle
+        responses:
+          '200':
+            description: Hello message from feature toggle microservice
+            content:
+              application/json:
+                schema:
+                  type: boolean
