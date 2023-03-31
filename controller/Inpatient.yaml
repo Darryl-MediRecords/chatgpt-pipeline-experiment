@@ -1,0 +1,10 @@
+
+
+---
+api: InpatientController
+description: This controller contains endpoints for retrieving user information and feature toggle status from the microservices.
+endpoints:
+  - hello: Retrieves a greeting with the user's name, tenant id, user id, tenant name, and user name
+  - helloUserInfo: Retrieves a UserInfoDTO with the user's tenant id, user id, tenant name, and user name
+  - helloFeign: Retrieves a list of items from the MrappClient
+  - helloFeatureToggle: Retrieves the feature toggle status from the MrFeatureToggleMicroserviceClient
