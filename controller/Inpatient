@@ -1,45 +1,123 @@
 
 
 ---
-
-title: InpatientController
-description: The InpatientController class provides the API endpoints for interacting with the Inpatient microservice.
-endpoints:
-  - name: hello
-    description: Returns a greeting with the given name
-    path: /v1/api/hello
-    method: GET
-    parameters:
-      - name: name
-        type: string
-        description: The name to be used in the greeting
-  - name: helloUserInfo
-    description: Returns a UserInfoDTO object with the current user's information
-    path: /v1/api/helloUserInfo
-    method: GET
-    parameters:
-      - name: name
-        type: string
-        description: The name to be used in the greeting
-  - name: helloFeign
-    description: Calls the MrappClient to retrieve data
-    path: /v1/api/helloFeign
-    method: GET
-    parameters:
-      - name: pageable
-        type: Pageable
-        description: A pageable object for pagination
-  - name: helloFeatureToggle
-    description: Calls the FeatureToggleMicroserviceClient to check the tenant configuration
-    path: /v1/api/helloFeatureToggle
-    method: GET
-    parameters:
-      - name: Tenant
-        type: string
-        description: The tenant to check the configuration for
-      - name: UseTag
-        type: string
-        description: The tag to check the configuration for
-      - name: tenantId
-        type: string
-        description: The tenantId to check the configuration for
+stoplight:
+  version: 1.0
+  info:
+    title: Template Microservice
+    description: This microservice provides functionality for creating and managing templates.
+    termsOfService: 'https://example.com/terms/'
+    contact:
+      name: API Support
+      url: 'https://www.example.com/support'
+      email: support@example.com
+    license:
+      name: Apache 2.0
+      url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+    version: 1.0.0
+  servers:
+    - url: 'https://example.com/api'
+  paths:
+    /v1/api/hello:
+      get:
+        summary: Get a greeting
+        description: Returns a greeting for a given name
+        operationId: getHello
+        parameters:
+          - name: name
+            in: query
+            description: Name of the person to greet
+            required: false
+            schema:
+              type: string
+              default: stranger
+        responses:
+          '200':
+            description: A greeting
+            content:
+              application/json:
+                schema:
+                  type: string
+    /v1/api/helloUserInfo:
+      get:
+        summary: Get user information
+        description: Returns user information for a given name
+        operationId: getUserInfo
+        parameters:
+          - name: name
+            in: query
+            description: Name of the person to greet
+            required: false
+            schema:
+              type: string
+              default: stranger
+        responses:
+          '200':
+            description: User information
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/UserInfoDTO'
+    /v1/api/helloFeign:
+      get:
+        summary: Get feign information
+        description: Returns feign information
+        operationId: getFeignInfo
+        parameters:
+          - name: pageable
+            in: query
+            description: Pageable object
+            required: true
+            schema:
+              type: object
+        responses:
+          '200':
+            description: Feign information
+            content:
+              application/json:
+                schema:
+                  type: string
+    /v1/api/helloFeatureToggle:
+      get:
+        summary: Get feature toggle information
+        description: Returns feature toggle information
+        operationId: getFeatureToggleInfo
+        parameters:
+          - name: tenantId
+            in: query
+            description: Tenant Id
+            required: true
+            schema:
+              type: string
+          - name: featureName
+            in: query
+            description: Feature Name
+            required: true
+            schema:
+              type: string
+          - name: featureId
+            in: query
+            description: Feature Id
+            required: true
+            schema:
+              type: string
+        responses:
+          '200':
+            description: Feature toggle information
+            content:
+              application/json:
+                schema:
+                  type: boolean
+components:
+  schemas:
+    UserInfoDTO:
+      type: object
+      properties:
+        userId:
+          type: string
+        userName:
+          type: string
+        tenantId:
+          type: string
+        tenantName:
+          type: string
