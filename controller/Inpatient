@@ -1,23 +1,93 @@
 
 
 ---
-
-name: InpatientController
-description: The InpatientController is a REST controller that provides endpoints for retrieving user information, interacting with the MRAppClient, and checking the tenant configuration with the FeatureToggleMicroserviceClient.
-endpoints:
-  - name: hello
-    description: Returns a hello message with the provided name, tenant id, user id, tenant name, and user name.
-    method: GET
-    path: /v1/api/hello
-  - name: helloUserInfo
-    description: Returns a UserInfoDTO object with the tenant id, user id, tenant name, and user name.
-    method: GET
-    path: /v1/api/helloUserInfo
-  - name: helloFeign
-    description: Returns a list of objects from the MRAppClient.
-    method: GET
-    path: /v1/api/helloFeign
-  - name: helloFeatureToggle
-    description: Returns a boolean value based on the tenant configuration with the FeatureToggleMicroserviceClient.
-    method: GET
-    path: /v1/api/helloFeatureToggle
+stoplight:
+  version: 1.0
+  info:
+    title: Template API
+    description: API for interacting with the Template microservice.
+    contact:
+      name: MediRecords
+      email: support@medirecords.com
+  servers:
+    - url: https://api.medirecords.com/v1/api
+  paths:
+    /hello:
+      get:
+        summary: Get hello message
+        description: Get hello message with user info
+        operationId: hello
+        parameters:
+          - name: name
+            in: query
+            description: Name of the user
+            schema:
+              type: string
+        responses:
+          200:
+            description: OK
+            content:
+              application/json:
+                schema:
+                  type: string
+    /helloUserInfo:
+      get:
+        summary: Get hello message with user info
+        description: Get hello message with user info
+        operationId: helloUserInfo
+        parameters:
+          - name: name
+            in: query
+            description: Name of the user
+            schema:
+              type: string
+        responses:
+          200:
+            description: OK
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/UserInfoDTO'
+    /helloFeign:
+      get:
+        summary: Get hello message with feign client
+        description: Get hello message with feign client
+        operationId: helloFeign
+        parameters:
+          - name: pageable
+            in: query
+            description: pageable parameters
+            schema:
+              type: object
+        responses:
+          200:
+            description: OK
+            content:
+              application/json:
+                schema:
+                  type: string
+    /helloFeatureToggle:
+      get:
+        summary: Get hello message with feature toggle
+        description: Get hello message with feature toggle
+        operationId: helloFeatureToggle
+        responses:
+          200:
+            description: OK
+            content:
+              application/json:
+                schema:
+                  type: boolean
+components:
+  schemas:
+    UserInfoDTO:
+      type: object
+      properties:
+        userId:
+          type: string
+        userName:
+          type: string
+        tenantId:
+          type: string
+        tenantName:
+          type: string
