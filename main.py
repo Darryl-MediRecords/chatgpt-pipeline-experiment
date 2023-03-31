@@ -92,38 +92,29 @@ def get_content_patch():
     return response.text
 
 def push_changed_files_to_pr(file_changes):
-
-    # dir_contents = repo.get_contents("")
-    # print("dir_contents")
-    # print(dir_contents)
-    # print ('\n'.join(str(p.sha) for p in dir_contents))
-
     for file in file_changes:
         file_name = file["name"]
+        filename = f"{file_name}.yaml"
         try:
             # Find the existing file
-            existing_file = repo.get_contents(file["name"], branch.sha)
+            existing_file = repo.get_contents(filename, branch.sha)
             # Update file
             repo.update_file(
-                path=file_name,
+                path=filename,
                 message="Chore: update generated stoplight files",
                 content=file["content"],
                 sha= existing_file.sha,
                 branch=branch.ref
             )
-            
-            print(f"Existing file url: {existing_file.html_url}")
         
-        except Exception as e:
+        except Exception:
             # Create the new file
-            new_file = repo.create_file(
-                path=file_name,
-                message=f"Chore: add generated stoplight file {file_name}",
+            repo.create_file(
+                path=filename,
+                message=f"Chore: add generated stoplight file {filename}",
                 content=file["content"],
                 branch=branch.ref
             )
-
-            print(f"New file url: {new_file.html_url}")
 
 def create_stoplight_doc():
     content = get_content_patch()
@@ -152,7 +143,7 @@ def create_stoplight_doc():
         except Exception as e:
             error_message = str(e)
             print(error_message)
-            pull_request.create_issue_comment(f"ChatGPT was unable to process the response about {file_name}")
+            pull_request.create_issue_comment(f"ChatGPT was unable to process the response about {error_message}")
 
     push_changed_files_to_pr(file_changes)
 
