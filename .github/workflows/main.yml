@@ -13,16 +13,7 @@ jobs:
     runs-on: ubuntu-latest # Specify the runner to run the job on
     name: ChatGPT Stoplight Generation # Job name
     steps:
-      - name: Check for "generate stoplight" comment
-        run: |
-          if grep -q "generate stoplight"; then
-            echo "Comment matched"
-          else
-            echo "Comment did not match"
-            exit 1
-          fi
-
-      - name: ChatGPT explain code # Step name
+      - name: ChatGPT Stoplight Generation # Step name
         uses: Darryl-MediRecords/chatgpt-pipeline-experiment@1.0.22
         with:
           openai_api_key: ${{ secrets.OPENAI_API_KEY }} # Get the OpenAI API key from repository secrets
