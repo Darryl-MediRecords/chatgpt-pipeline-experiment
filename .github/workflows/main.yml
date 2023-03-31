@@ -11,8 +11,7 @@ on:
 jobs:
   chatgpt-analysis: # Define the job
     runs-on: ubuntu-latest # Specify the runner to run the job on
-    name: ChatGPT explain code # Job name
-    if: github.event.issue.pull_request
+    name: ChatGPT Stoplight Generation # Job name
     steps:
       - name: Check for "generate stoplight" comment
         run: |
