@@ -1,50 +1,11 @@
 
+
 ---
-stoplight:
-  name: InpatientController
-  description: API for managing inpatient records
-  overview: This API provides endpoints for managing inpatient records, including retrieving user information, calling the MrappClient, and checking tenant configuration with the FeatureToggleMicroserviceClient.
-  endpoints:
-    - name: hello
-      description: Retrieves a hello message with tenant and user information.
-      method: GET
-      parameters:
-        - name: name
-          description: Name of the user.
-          type: string
-          required: false
-          default: stranger
-      responses:
-        - status: 200
-          description: Returns a hello message.
-    - name: helloUserInfo
-      description: Retrieves user information.
-      method: GET
-      parameters:
-        - name: name
-          description: Name of the user.
-          type: string
-          required: false
-          default: stranger
-      responses:
-        - status: 200
-          description: Returns a UserInfoDTO object.
-    - name: helloFeign
-      description: Calls the MrappClient.
-      method: GET
-      parameters:
-        - name: pageable
-          description: Pageable object.
-          type: object
-          required: true
-      responses:
-        - status: 200
-          description: Returns the results of the MrappClient call.
-    - name: helloFeatureToggle
-      description: Checks tenant configuration with the FeatureToggleMicroserviceClient.
-      method: GET
-      parameters:
-        - none
-      responses:
-        - status: 200
-          description: Returns a boolean indicating the result of the FeatureToggleMicroserviceClient call.
+
+api: InpatientController
+description: The InpatientController API provides methods which allow users to retrieve information about a patient's inpatient stay. It includes methods to get user information, retrieve data from other microservices using Feign, and check feature toggles.
+endpoints:
+  - hello: Retrieves a greeting with user information
+  - helloUserInfo: Retrieves a UserInfoDTO object with user information
+  - helloFeign: Retrieves data from other microservices using Feign
+  - helloFeatureToggle: Checks feature toggles for a tenant
