@@ -1,14 +1,14 @@
 
 
-stoplight:
-- name: InpatientController
-  description: This controller provides the endpoints for the Inpatient API.
-  methods:
-    - name: hello
-      description: Returns a greeting with the user's tenant and user information.
-    - name: helloUserInfo
-      description: Returns a UserInfoDTO object with the user's tenant and user information.
-    - name: helloFeign
-      description: Uses the MrappClient to retrieve a list of records.
-    - name: helloFeatureToggle
-      description: Uses the FeatureToggleMicroserviceClient to check a tenant configuration.
+---
+
+# InpatientController
+
+## Overview
+The InpatientController provides endpoints for retrieving user information, using a Feign client to interact with other microservices, and checking tenant configurations. 
+
+## Endpoints
+- `/hello`: Retrieves a string with the provided name, tenant id, user id, tenant name, and user name.
+- `/helloUserInfo`: Retrieves a UserInfoDTO object with the tenant id, user id, tenant name, and user name.
+- `/helloFeign`: Retrieves a string using a Feign client.
+- `/helloFeatureToggle`: Retrieves a boolean value using a Feign client to check a tenant configuration.
