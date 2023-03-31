@@ -5,8 +5,7 @@ on:
       - master
     paths:
       - '**'
-    paths-ignore:
-      - '**/*.yaml'
+      - '!**/*.yaml'
 
 jobs:
   chatgpt-analysis: # Define the job
