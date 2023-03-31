@@ -3,9 +3,8 @@ on:
     types: [opened, synchronize] # Run the workflow when pull request is opened or synchronized
     paths:
       - '**/*Controller.java'
-    paths-ignore:
-      - '**/*.yaml'
-      - '**.yaml'
+      - '!**/*.yaml'
+      - '!**.yaml'
 
 jobs:
   chatgpt-analysis: # Define the job
