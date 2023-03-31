@@ -1,7 +1,12 @@
 ```yaml
 
 
-# InpatientController
+---
+title: Inpatient Controller
+summary: This page describes the Inpatient Controller API.
+---
+# Inpatient Controller API
 
 ## Overview
-This controller is responsible for providing endpoints for the Inpatient API. It contains methods for retrieving user information, making requests to other microservices, and checking tenant configurations.```
+
+This API provides an interface for interacting with the Inpatient Controller. It allows for retrieving user information, making requests to the mrapp client, and checking tenant configurations with the feature toggle microservice client.```
