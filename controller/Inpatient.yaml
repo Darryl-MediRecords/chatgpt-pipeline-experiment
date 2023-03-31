@@ -1,108 +1,14 @@
 
 
----
 stoplight:
-  version: 0.0.1
-  info:
-    title: Template Microservice API
-    description: This API provides functionality to interact with the Template Microservice.
-    contact:
-      name: MediRecords
-      url: https://medirecords.com
-      email: info@medirecords.com
-  servers:
-    - url: https://api.medirecords.com/v1/
-  paths:
-    /hello:
-      get:
-        summary: Returns a hello message.
-        description: Returns a hello message with the tenant and user id.
-        parameters:
-          - name: name
-            in: query
-            description: The name of the user.
-            required: false
-            schema:
-              type: string
-        responses:
-          '200':
-            description: The hello message.
-            content:
-              application/json:
-                schema:
-                  type: string
-    /helloUserInfo:
-      get:
-        summary: Returns a hello message with user info.
-        description: Returns a hello message with the tenant and user id and other user info.
-        parameters:
-          - name: name
-            in: query
-            description: The name of the user.
-            required: false
-            schema:
-              type: string
-        responses:
-          '200':
-            description: The hello message with user info.
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    userId:
-                      type: string
-                    userName:
-                      type: string
-                    tenantId:
-                      type: string
-                    tenantName:
-                      type: string
-    /helloFeign:
-      get:
-        summary: Returns a list of entities.
-        description: Returns a list of entities from the MrappClient.
-        parameters:
-          - name: pageable
-            in: query
-            description: The pageable object for pagination.
-            required: true
-            schema:
-              type: object
-        responses:
-          '200':
-            description: The list of entities.
-            content:
-              application/json:
-                schema:
-                  type: array
-    /helloFeatureToggle:
-      get:
-        summary: Returns a boolean indicating if the feature is enabled.
-        description: Returns a boolean indicating if the feature is enabled for the given tenant.
-        parameters:
-          - name: tenantId
-            in: query
-            description: The id of the tenant.
-            required: true
-            schema:
-              type: string
-          - name: featureName
-            in: query
-            description: The name of the feature.
-            required: true
-            schema:
-              type: string
-          - name: featureId
-            in: query
-            description: The id of the feature.
-            required: true
-            schema:
-              type: string
-        responses:
-          '200':
-            description: The boolean indicating if the feature is enabled.
-            content:
-              application/json:
-                schema:
-                  type: boolean
+- name: InpatientController
+  description: This controller provides the endpoints for the Inpatient API.
+  methods:
+    - name: hello
+      description: Returns a greeting with the user's tenant and user information.
+    - name: helloUserInfo
+      description: Returns a UserInfoDTO object with the user's tenant and user information.
+    - name: helloFeign
+      description: Uses the MrappClient to retrieve a list of records.
+    - name: helloFeatureToggle
+      description: Uses the FeatureToggleMicroserviceClient to check a tenant configuration.
