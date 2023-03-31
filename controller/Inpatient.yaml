@@ -1,0 +1,80 @@
+
+
+---
+stoplight:
+  version: 1.0
+  info:
+    title: Template Microservice API
+    description: This API provides an overview of the Template Microservice. It includes methods to get user info, use feign clients and check feature toggle configurations.
+    termsOfService: https://medirecords.com/terms
+    contact:
+      name: MediRecords
+      url: https://medirecords.com
+      email: info@medirecords.com
+    license:
+      name: Apache 2.0
+      url: https://www.apache.org/licenses/LICENSE-2.0.html
+  servers:
+    - url: https://medirecords.com/v1/api
+  paths:
+    /hello:
+      get:
+        summary: Get hello message
+        description: Returns a hello message
+        parameters:
+          - name: name
+            in: query
+            description: Name of the user
+            required: false
+            schema:
+              type: string
+              default: stranger
+        responses:
+          '200':
+            description: Hello message
+            content:
+              application/json:
+                schema:
+                  type: string
+    /helloUserInfo:
+      get:
+        summary: Get user info
+        description: Returns user info
+        responses:
+          '200':
+            description: User info
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    userId:
+                      type: string
+                    userName:
+                      type: string
+                    tenantId:
+                      type: string
+                    tenantName:
+                      type: string
+    /helloFeign:
+      get:
+        summary: Use feign client
+        description: Returns result of feign client
+        responses:
+          '200':
+            description: Feign client result
+            content:
+              application/json:
+                schema:
+                  type: string
+    /helloFeatureToggle:
+      get:
+        summary: Check feature toggle configuration
+        description: Returns result of feature toggle configuration
+        responses:
+          '200':
+            description: Feature toggle configuration result
+            content:
+              application/json:
+                schema:
+                  type: boolean
