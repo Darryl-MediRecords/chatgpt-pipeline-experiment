@@ -1,0 +1,48 @@
+
+
+---
+stoplight:
+  name: InpatientController
+  description: This controller provides endpoints for retrieving user information and using feign clients to access other microservices.
+  version: 1.0.0
+  methods:
+    - name: hello
+      description: Retrieves a greeting with the given name, tenant name, tenant id, user name and user id.
+      parameters:
+        - name: name
+          description: The name of the user to be greeted
+          type: string
+          required: false
+      responses:
+        - code: 200
+          description: Greeting with the given name, tenant name, tenant id, user name and user id.
+    - name: helloUserInfo
+      description: Retrieves user info with the given name.
+      parameters:
+        - name: name
+          description: The name of the user
+          type: string
+          required: false
+      responses:
+        - code: 200
+          description: UserInfoDTO with the given name.
+    - name: helloFeign
+      description: Retrieves information from mrappClient using feign.
+      parameters:
+        - name: pageable
+          description: The pageable object for pagination
+          type: pageable
+          required: true
+      responses:
+        - code: 200
+          description: Information retrieved from mrappClient using feign.
+    - name: helloFeatureToggle
+      description: Retrieves feature toggle information from featureToggleMicroserviceClient using feign.
+      parameters:
+        - name: None
+          description: None
+          type: None
+          required: None
+      responses:
+        - code: 200
+          description: Feature toggle information retrieved from featureToggleMicroserviceClient using feign.
