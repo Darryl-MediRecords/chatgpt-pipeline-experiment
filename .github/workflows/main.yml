@@ -1,10 +1,12 @@
 on:
   pull_request: # Trigger the workflow on pull request events
     types: [opened, synchronize] # Run the workflow when pull request is opened or synchronized
+    branches:
+      - master
     paths:
-      - '**/*Controller.java'
-      - '!**/*.yaml'
-      - '!**.yaml'
+      - '**'
+    paths-ignore:
+      - '**/*.yaml'
 
 jobs:
   chatgpt-analysis: # Define the job
@@ -12,7 +14,7 @@ jobs:
     name: ChatGPT explain code # Job name
     steps:
       - name: ChatGPT explain code # Step name
-        uses: Darryl-MediRecords/chatgpt-pipeline-experiment@1.0.9
+        uses: Darryl-MediRecords/chatgpt-pipeline-experiment@1.0.23
         with:
           openai_api_key: ${{ secrets.OPENAI_API_KEY }} # Get the OpenAI API key from repository secrets
           github_token: ${{ secrets.DARRYL_GITHUB_TOKEN }} # Get the Github Token from repository secrets
