@@ -2,72 +2,107 @@
 
 ---
 stoplight:
-  version: "1.0"
+  version: 0.0.1
   info:
-    title: Inpatient API
-    description: An API for retrieving inpatient data.
-    termsOfService: https://example.com/terms
+    title: Template Microservice API
+    description: This API provides functionality to interact with the Template Microservice.
     contact:
-      name: API Support
-      url: http://www.example.com/support
-      email: support@example.com
-    license:
-      name: Apache 2.0
-      url: https://www.apache.org/licenses/LICENSE-2.0.html
-    version: 1.0.0
+      name: MediRecords
+      url: https://medirecords.com
+      email: info@medirecords.com
   servers:
-    - url: https://example.com/api
+    - url: https://api.medirecords.com/v1/
   paths:
-    /v1/api/hello:
+    /hello:
       get:
-        summary: Get hello message
+        summary: Returns a hello message.
+        description: Returns a hello message with the tenant and user id.
         parameters:
           - name: name
             in: query
-            description: Name of the user
+            description: The name of the user.
             required: false
             schema:
               type: string
         responses:
           '200':
-            description: Success
-          '400':
-            description: Bad Request
-    /v1/api/helloUserInfo:
+            description: The hello message.
+            content:
+              application/json:
+                schema:
+                  type: string
+    /helloUserInfo:
       get:
-        summary: Get user info
+        summary: Returns a hello message with user info.
+        description: Returns a hello message with the tenant and user id and other user info.
         parameters:
           - name: name
             in: query
-            description: Name of the user
+            description: The name of the user.
             required: false
             schema:
               type: string
         responses:
           '200':
-            description: Success
-          '400':
-            description: Bad Request
-    /v1/api/helloFeign:
+            description: The hello message with user info.
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    userId:
+                      type: string
+                    userName:
+                      type: string
+                    tenantId:
+                      type: string
+                    tenantName:
+                      type: string
+    /helloFeign:
       get:
-        summary: Get hello message from Feign
+        summary: Returns a list of entities.
+        description: Returns a list of entities from the MrappClient.
         parameters:
           - name: pageable
             in: query
-            description: Pageable object
+            description: The pageable object for pagination.
             required: true
             schema:
               type: object
         responses:
           '200':
-            description: Success
-          '400':
-            description: Bad Request
-    /v1/api/helloFeatureToggle:
+            description: The list of entities.
+            content:
+              application/json:
+                schema:
+                  type: array
+    /helloFeatureToggle:
       get:
-        summary: Get feature toggle from Feign
+        summary: Returns a boolean indicating if the feature is enabled.
+        description: Returns a boolean indicating if the feature is enabled for the given tenant.
+        parameters:
+          - name: tenantId
+            in: query
+            description: The id of the tenant.
+            required: true
+            schema:
+              type: string
+          - name: featureName
+            in: query
+            description: The name of the feature.
+            required: true
+            schema:
+              type: string
+          - name: featureId
+            in: query
+            description: The id of the feature.
+            required: true
+            schema:
+              type: string
         responses:
           '200':
-            description: Success
-          '400':
-            description: Bad Request
+            description: The boolean indicating if the feature is enabled.
+            content:
+              application/json:
+                schema:
+                  type: boolean
