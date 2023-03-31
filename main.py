@@ -144,7 +144,7 @@ def create_stoplight_doc():
             print(f"Contains Controller.java: {is_controller}")
             if is_controller:
                 response = send_to_chat_gpt("generate a stoplight documentation in YAML file format where the info description explains the overview of the api", file_name, diff_text)
-                yaml_name = file_name.replace(CONTROLLER)
+                yaml_name = file_name.replace(CONTROLLER, "")
                 file_changes.append({ "name": yaml_name, "content": response })
 
         except Exception as e:
