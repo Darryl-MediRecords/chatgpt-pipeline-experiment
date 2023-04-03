@@ -1,65 +1,103 @@
 ```yaml
 
-
 ---
 stoplight:
-  version: 1.0
-  title: InpatientController
-  description: 
-This is a description of an API for InpatientController which has four methods: hello, helloUserInfo, helloFeign and helloFeatureToggle. Each method has different parameters and responses. The hello method has one parameter (name) and one response (status 200). The helloUserInfo method has one parameter (name) and one response (status 200). The helloFeign method has one parameter (pageable) and one response (status 200). The helloFeatureToggle method has three parameters (T, UseTag, 76b011f6-25b3-11e7-a0ea-c776ddb51c38) and one response (status 200).
+  version: 1.0.0
+  info:
+    title: Inpatient Controller
+    description: 
+This is an API for Inpatient Controller which includes four endpoints: "/v1/api/hello", "/v1/api/helloUserInfo", "/v1/api/helloFeign" and "/v1/api/helloFeatureToggle". Each endpoint has a different purpose, such as returning a hello message, hello message with user info, hello message from feign client, and a boolean value from feature toggle microservice. It also includes a schema for UserInfoDTO.
+    contact:
+      name: MediRecords
+      url: https://medirecords.com
+      email: info@medirecords.com
   components:
-    - type: api
-      name: InpatientController
-      description: API for InpatientController
-      methods:
-        - name: hello
-          description: Returns a greeting message
+    schemas:
+      UserInfoDTO:
+        type: object
+        properties:
+          userId:
+            type: string
+          userName:
+            type: string
+          tenantId:
+            type: string
+          tenantName:
+            type: string
+openapi: 3.1.0
+info:
+    title: controller/InpatientController.java
+    description: 
+    version: '1.0'
+servers:
+    - url: 'http://localhost:3000'
+
+      /v1/api/hello:
+        get:
+          description: Returns a hello message
           parameters:
             - name: name
+              in: query
               description: The name of the user
-              type: string
               required: false
+              type: string
               default: stranger
           responses:
-            - status: 200
-              description: Successful response
-        - name: helloUserInfo
-          description: Returns a UserInfoDTO
+            200:
+              description: Hello message
+              schema:
+                type: string
+      /v1/api/helloUserInfo:
+        get:
+          description: Returns a hello message with user info
           parameters:
             - name: name
+              in: query
               description: The name of the user
-              type: string
               required: false
+              type: string
               default: stranger
           responses:
-            - status: 200
-              description: Successful response
-        - name: helloFeign
-          description: Returns a pageable list of objects
+            200:
+              description: Hello message with user info
+              schema:
+                $ref: '#/components/schemas/UserInfoDTO'
+      /v1/api/helloFeign:
+        get:
+          description: Returns a hello message from feign client
           parameters:
             - name: pageable
-              description: The pageable list of objects
-              type: pageable
+              in: query
+              description: Pageable object
               required: true
+              type: string
           responses:
-            - status: 200
-              description: Successful response
-        - name: helloFeatureToggle
-          description: Returns a boolean value
+            200:
+              description: Hello message from feign client
+              schema:
+                type: string
+      /v1/api/helloFeatureToggle:
+        get:
+          description: Returns a boolean value from feature toggle microservice
           parameters:
-            - name: T
-              description: Tenant
-              type: string
+            - name: tenantId
+              in: query
+              description: The Id of the tenant
               required: true
-            - name: UseTag
-              description: Tag to check
               type: string
+            - name: featureName
+              in: query
+              description: The name of the feature
               required: true
-            - name: 76b011f6-25b3-11e7-a0ea-c776ddb51c38
-              description: Unique identifier
               type: string
+            - name: userId
+              in: query
+              description: The Id of the user
               required: true
+              type: string
           responses:
-            - status: 200
-              description: Successful response
+            200:
+              description: Boolean value from feature toggle microservice
+              schema:
+                type: boolean
 ```
