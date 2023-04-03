@@ -1,0 +1,51 @@
+
+
+---
+title: InpatientController
+description: This is a controller for Inpatient.
+endpoints:
+  - name: hello
+    description: This endpoint returns a hello message.
+    method: GET
+    path: /v1/api/hello
+    parameters:
+      - name: name
+        description: The name to use in the hello message.
+        required: false
+        type: string
+        default: stranger
+    responses:
+      - description: A hello message.
+        status: 200
+  - name: helloUserInfo
+    description: This endpoint returns user info.
+    method: GET
+    path: /v1/api/helloUserInfo
+    parameters:
+      - name: name
+        description: The name to use in the hello message.
+        required: false
+        type: string
+        default: stranger
+    responses:
+      - description: User info.
+        status: 200
+  - name: helloFeign
+    description: This endpoint returns a list of items.
+    method: GET
+    path: /v1/api/helloFeign
+    parameters:
+      - name: pageable
+        description: The pageable object.
+        required: true
+        type: object
+    responses:
+      - description: A list of items.
+        status: 200
+  - name: helloFeatureToggle
+    description: This endpoint checks if a feature toggle is enabled.
+    method: GET
+    path: /v1/api/helloFeatureToggle
+    responses:
+      - description: A boolean value indicating whether the feature toggle is enabled or not.
+        status: 200
