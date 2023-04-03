@@ -1,0 +1,92 @@
+openapi: 3.1.0
+info:
+    title: controller/InpatientController.java
+    description: |
+      
+This OpenAPI 3.1.0 file defines several paths for the controller/InpatientController.java file. Each path contains a summary, description, parameters, and responses. The paths return various messages, objects, and booleans depending on the parameters given.
+    version: '1.0'
+servers:
+    - url: 'http://localhost:3000'
+paths:
+    /v1/api/hello:
+      get:
+        summary: Returns a hello message
+        description: Returns a hello message
+        parameters:
+          - name: name
+            in: query
+            description: The name of the user
+            required: false
+            type: string
+            default: stranger
+        responses:
+          '200':
+            description: Hello message
+            schema:
+              type: string
+    /v1/api/helloUserInfo:
+      get:
+        summary: Returns a hello message with user information
+        description: Returns a hello message with user information
+        parameters:
+          - name: name
+            in: query
+            description: The name of the user
+            required: false
+            type: string
+            default: stranger
+        responses:
+          '200':
+            description: User information
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                userName:
+                  type: string
+                tenantId:
+                  type: string
+                tenantName:
+                  type: string
+    /v1/api/helloFeign:
+      get:
+        summary: Returns a hello message from feign client
+        description: Returns a hello message from feign client
+        parameters:
+          - name: pageable
+            in: query
+            description: The pageable object
+            required: false
+            type: object
+        responses:
+          '200':
+            description: Hello message
+            schema:
+              type: string
+    /v1/api/helloFeatureToggle:
+      get:
+        summary: Returns a hello message from feature toggle microservice
+        description: Returns a hello message from feature toggle microservice
+        parameters:
+          - name: tenant
+            in: query
+            description: The tenant
+            required: true
+            type: string
+          - name: useTag
+            in: query
+            description: The useTag
+            required: true
+            type: string
+          - name: tenantId
+            in: query
+            description: The tenantId
+            required: true
+            type: string
+        responses:
+          '200':
+            description: Feature toggle boolean
+            schema:
+              type: boolean
+```
