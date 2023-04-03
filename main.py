@@ -47,7 +47,7 @@ def send_to_chat_gpt(command, file_content):
     
     return response['choices'][0]['text']
 
-def compile_overview_description(generated_stoplight, file_content):
+def compile_overview_description(generated_stoplight):
     summary = send_to_chat_gpt("Summarize this", generated_stoplight)
     pattern = r"description: .*?\n"
     replacement = f"description: {summary}\n"
@@ -61,11 +61,13 @@ def compile_stoplight_doc(command, file_name, file_content):
     response_content = f"```yaml\n{response_content}\n```"
     print(f"Result from chat gpt:\n\n{file_name}`:\n {response_content}\n")
     
-     # Polishing the response with proper metadata and format
-    response_content = re.sub(r".*paths:", f"openapi: 3.1.0\ninfo:\n    title: {file_name}\n    description: \n    version: '1.0'\nservers:\n    - url: 'http://localhost:3000'\n", response_content)
+    # Polishing the response with proper metadata and format
+    index = response_content.index("paths:")
+    replaced_with = f"openapi: 3.1.0\ninfo:\n    title: {file_name}\n    description: \n    version: '1.0'\nservers:\n    - url: 'http://localhost:3000'\n"
+    response_content =  replaced_with + response_content[index:]
 
     # Compile the Overview Description
-    response_content = compile_overview_description(response_content, file_content)
+    response_content = compile_overview_description(response_content)
 
     print(f"Updated response from chat gpt:\n\n{file_name}`:\n {response_content}\n")
    
