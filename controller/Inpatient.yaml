@@ -1,0 +1,81 @@
+openapi: 3.1.0
+info:
+    title: controller/InpatientController.java
+    description: |            This OpenAPI 3.1.0 document contains 4 different paths for the controller/InpatientController.java file. The first path returns a greeting with the given name, the second path returns user info for the given name, the third path returns data from the Mrapp Client, and the fourth path returns feature toggle data.
+    version: '1.0'
+servers:
+    - url: 'http://localhost:3000'
+paths:
+    /v1/api/hello:
+      get:
+        summary: Returns a greeting
+        description: Returns a greeting with the given name
+        operationId: hello
+        parameters:
+          - name: name
+            in: query
+            description: The name of the user
+            required: false
+            type: string
+            default: stranger
+        responses:
+          200:
+            description: A successful response
+            schema:
+              type: string
+    /v1/api/helloUserInfo:
+      get:
+        summary: Returns user info
+        description: Returns user info for the given name
+        operationId: helloUserInfo
+        parameters:
+          - name: name
+            in: query
+            description: The name of the user
+            required: false
+            type: string
+            default: stranger
+        responses:
+          200:
+            description: A successful response
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                  description: The ID of the user
+                userName:
+                  type: string
+                  description: The name of the user
+                tenantId:
+                  type: string
+                  description: The ID of the tenant
+                tenantName:
+                  type: string
+                  description: The name of the tenant
+    /v1/api/helloFeign:
+      get:
+        summary: Returns data from the Mrapp Client
+        description: Returns data from the Mrapp Client
+        operationId: helloFeign
+        parameters:
+          - name: pageable
+            in: query
+            description: The pageable object
+            required: true
+            type: object
+        responses:
+          200:
+            description: A successful response
+            schema:
+              type: object
+    /v1/api/helloFeatureToggle:
+      get:
+        summary: Returns feature toggle data
+        description: Returns feature toggle data
+        operationId: helloFeatureToggle
+        responses:
+          200:
+            description: A successful response
+            schema:
+              type: boolean
