@@ -48,7 +48,7 @@ def send_to_chat_gpt(command, file_content):
     return response['choices'][0]['text']
 
 def compile_overview_description(generated_stoplight, file_content):
-    summary = send_to_chat_gpt("Summarize this", file_content)
+    summary = send_to_chat_gpt("Summarize this", generated_stoplight)
     pattern = r"description: .*?\n"
     replacement = f"description: {summary}\n"
     
@@ -64,12 +64,16 @@ def compile_stoplight_doc(command, file_name, file_content):
     # Compile the Overview Description
     response_content = compile_overview_description(response_content, file_content)
 
-    response_content = f"```yaml\n{response_content}\n```"
     print(f"Updated response from chat gpt:\n\n{file_name}`:\n {response_content}\n")
+
+    # Polishing the response with proper metadata and format
+    re.sub(r".*stoplight:", "openapi: 3.1.0", response_content)
 
     # Adding a comment to the pull request with ChatGPT's response
     pull_request.create_issue_comment(
         f"ChatGPT's response about `{file_name}`:\n {response_content}")
+
+    return response_content
 
 def get_content_patch():
     url = f"https://api.github.com/repos/{os.getenv('GITHUB_REPOSITORY')}/pulls/{args.github_pr_id}"
@@ -132,7 +136,7 @@ def create_stoplight_doc():
             is_controller = file_name.endswith(CONTROLLER)
             print(f"Contains Controller.java: {is_controller}")
             if is_controller:
-                response = compile_stoplight_doc("Generate a Stoplight documentation in raw YAML file format", file_name, diff_text)
+                response = compile_stoplight_doc("Generate a Stoplight API documentation in YAML file format", file_name, diff_text)
                 yaml_name = file_name.replace(CONTROLLER, "")
                 file_changes.append({ "name": yaml_name, "content": response })
 
