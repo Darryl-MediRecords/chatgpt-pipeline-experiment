@@ -1,0 +1,86 @@
+
+
+stoplight:
+  version: "1.0"
+  info:
+    title: InpatientController
+    description: |            This is a controller for the Inpatient microservice which includes paths for returning a hello message, user information, a response from the MrappClient, and a response from the FeatureToggleMicroserviceClient. It also defines a schema for the UserInfoDTO object.
+    contact:
+      name: Medirecords
+      url: https://medirecords.com
+  servers:
+    - url: https://localhost/v1/api
+  paths:
+    /hello:
+      get:
+        summary: Return a hello message
+        parameters:
+          - name: name
+            in: query
+            required: false
+            schema:
+              type: string
+              default: stranger
+        responses:
+          '200':
+            description: Successful response
+            content:
+              application/json:
+                schema:
+                  type: string
+    /helloUserInfo:
+      get:
+        summary: Return user information
+        parameters:
+          - name: name
+            in: query
+            required: false
+            schema:
+              type: string
+              default: stranger
+        responses:
+          '200':
+            description: Successful response
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/UserInfoDTO'
+    /helloFeign:
+      get:
+        summary: Return a response from the MrappClient
+        parameters:
+          - name: pageable
+            in: query
+            required: true
+            schema:
+              type: object
+        responses:
+          '200':
+            description: Successful response
+            content:
+              application/json:
+                schema:
+                  type: string
+    /helloFeatureToggle:
+      get:
+        summary: Return a response from the FeatureToggleMicroserviceClient
+        responses:
+          '200':
+            description: Successful response
+            content:
+              application/json:
+                schema:
+                  type: boolean
+  components:
+    schemas:
+      UserInfoDTO:
+        type: object
+        properties:
+          userId:
+            type: string
+          userName:
+            type: string
+          tenantId:
+            type: string
+          tenantName:
+            type: string
