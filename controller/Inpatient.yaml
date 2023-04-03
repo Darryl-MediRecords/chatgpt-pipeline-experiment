@@ -1,0 +1,90 @@
+openapi: 3.1.0
+info:
+    title: controller/InpatientController.java
+    description: |      
+This OpenAPI 3.1.0 document defines four paths: /hello, /helloUserInfo, /helloFeign, and /helloFeatureToggle. Each path has a summary and operationId, with some having parameters or a reference to a UserInfoDTO schema. Responses are provided for each path and are either a string, boolean, or an object.
+    version: '1.0'
+servers:
+    - url: 'http://localhost:3000'
+paths:
+  /hello:
+    get:
+      summary: Get hello message
+      operationId: hello
+      parameters:
+        - name: name
+          in: query
+          description: Name of the user
+          required: false
+          schema:
+            type: string
+            default: stranger
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+  /helloUserInfo:
+    get:
+      summary: Get UserInfoDTO
+      operationId: helloUserInfo
+      parameters:
+        - name: name
+          in: query
+          description: Name of the user
+          required: false
+          schema:
+            type: string
+            default: stranger
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInfoDTO'
+  /helloFeign:
+    get:
+      summary: Get hello message from Feign
+      operationId: helloFeign
+      parameters:
+        - name: pageable
+          in: query
+          description: Pageable parameter
+          required: true
+          schema:
+            type: object
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+  /helloFeatureToggle:
+    get:
+      summary: Get feature toggle
+      operationId: helloFeatureToggle
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: boolean
+
+components:
+  schemas:
+    UserInfoDTO:
+      type: object
+      properties:
+        userId:
+          type: string
+        userName:
+          type: string
+        tenantId:
+          type: string
+        tenantName:
+          type: string
