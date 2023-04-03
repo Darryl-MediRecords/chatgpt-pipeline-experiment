@@ -50,7 +50,7 @@ def send_to_chat_gpt(command, file_content):
 def compile_overview_description(generated_stoplight):
     summary = send_to_chat_gpt("Summarize this", generated_stoplight)
     pattern = r"description: .*?\n"
-    replacement = f"description: |\n      {summary}\n"
+    replacement = f"description: |      {summary}\n"
     
     return re.sub(pattern, replacement, generated_stoplight, count=1)
 
@@ -58,7 +58,6 @@ def compile_stoplight_doc(command, file_name, file_content):
     # Get the structure
     response_content = send_to_chat_gpt(command, file_content)
 
-    response_content = f"```yaml\n{response_content}\n```"
     print(f"Result from chat gpt:\n\n{file_name}`:\n ```yaml{response_content}```\n")
     
     # Polishing the response with proper metadata and format
