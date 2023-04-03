@@ -49,8 +49,9 @@ def send_to_chat_gpt(command, file_content):
 
 def compile_overview_description(generated_stoplight):
     summary = send_to_chat_gpt("Summarize this", generated_stoplight)
+    trimmed_summary = summary.replace("\n", "      ")
     pattern = r"description: .*?\n"
-    replacement = f"description: |      {summary}\n"
+    replacement = f"description: |{trimmed_summary}\n"
     
     return re.sub(pattern, replacement, generated_stoplight, count=1)
 
@@ -72,7 +73,7 @@ def compile_stoplight_doc(command, file_name, file_content):
    
     # Adding a comment to the pull request with ChatGPT's response
     pull_request.create_issue_comment(
-        f"ChatGPT's response about `{file_name}`:\n ```yaml{response_content}```")
+        f"ChatGPT's response about `{file_name}`:\n ```yaml{response_content}\n```")
 
     return response_content
 
