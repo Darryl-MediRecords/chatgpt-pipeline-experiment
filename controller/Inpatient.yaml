@@ -1,0 +1,102 @@
+
+
+---
+title: InpatientController
+description: Controller for Inpatient API
+route: /v1/api
+stoplight:
+  version: 0.17.2
+  ui:
+    dark_mode: false
+  info:
+    title: InpatientController
+    description: Controller for Inpatient API
+    contact:
+      name: John Doe
+      url: http://example.com
+      email: john.doe@example.com
+  servers:
+    - url: http://localhost:8080
+      description: Local development server
+  components:
+    schemas: {}
+    securitySchemes: {}
+    parameters: {}
+    examples: {}
+    requestBodies: {}
+    headers: {}
+    links: {}
+    callbacks: {}
+  paths:
+    /hello:
+      get:
+        summary: Returns a greeting
+        description: Returns a greeting for the specified name
+        operationId: hello
+        parameters:
+          - name: name
+            in: query
+            description: Name of the person to greet
+            required: false
+            schema:
+              type: string
+              default: stranger
+        responses:
+          '200':
+            description: OK
+            content:
+              application/json:
+                example:
+                  greeting: Hello stranger, this is hello from Template Microservice. Tenant id: 76b011f6-25b3-11e7-a0ea-c776ddb51c38. User id: 1. Tenant name: T. User name: John Doe
+    /helloUserInfo:
+      get:
+        summary: Returns user info
+        description: Returns user info
+        operationId: helloUserInfo
+        parameters:
+          - name: name
+            in: query
+            description: Name of the person to greet
+            required: false
+            schema:
+              type: string
+              default: stranger
+        responses:
+          '200':
+            description: OK
+            content:
+              application/json:
+                example:
+                  userId: 1
+                  userName: John Doe
+                  tenantId: 76b011f6-25b3-11e7-a0ea-c776ddb51c38
+                  tenantName: T
+    /helloFeign:
+      get:
+        summary: Returns list of entities
+        description: Returns list of entities
+        operationId: helloFeign
+        parameters:
+          - name: pageable
+            in: query
+            description: Pageable
+            required: false
+            schema:
+              type: object
+        responses:
+          '200':
+            description: OK
+            content:
+              application/json:
+                example: [{id: 1, name: John Doe}, {id: 2, name: Jane Doe}]
+    /helloFeatureToggle:
+      get:
+        summary: Returns feature toggle
+        description: Returns feature toggle
+        operationId: helloFeatureToggle
+        responses:
+          '200':
+            description: OK
+            content:
+              application/json:
+                example: true
