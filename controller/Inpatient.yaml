@@ -1,0 +1,58 @@
+openapi: 3.1.0
+info:
+    title: Inpatient
+    description: |
+      The above code is a Stoplight API Documentation, written in the OpenAPI 3.0.0 format. It contains four different paths that can be accessed through the API. The first path, "/hello", is used to get a hello message from the API, and it takes in an optional query parameter called "name" that is a string. The second path, "/helloUserInfo", is used to get hello user info from the API, and it takes in an optional query parameter called "name" that is a string. The third path, "/helloFeign", is used to get hello Feign from the API, and it takes in a required query parameter called "pageable" that is an object. The fourth path, "/helloFeatureToggle", is used to get hello feature toggle from the API, and it does not take in any query parameters.
+    version: '1.0'
+servers:
+    - url: 'http://localhost:3000'
+paths:
+  /hello:
+    get:
+      summary: Get hello message
+      operationId: hello
+      parameters:
+        - name: name
+          in: query
+          description: Name of the user
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+  /helloUserInfo:
+    get:
+      summary: Get hello user info
+      operationId: helloUserInfo
+      parameters:
+        - name: name
+          in: query
+          description: Name of the user
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+  /helloFeign:
+    get:
+      summary: Get hello Feign
+      operationId: helloFeign
+      parameters:
+        - name: pageable
+          in: query
+          description: Pageable object
+          required: true
+          schema:
+            type: object
+      responses:
+        '200':
+          description: OK
+  /helloFeatureToggle:
+    get:
+      summary: Get hello feature toggle
+      operationId: helloFeatureToggle
+      responses:
+        '200':
+          description: OK
