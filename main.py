@@ -47,13 +47,13 @@ def send_to_chat_gpt(command, file_content):
     
     return response['choices'][0]['text']
 
-def compile_overview_description(generated_stoplight):
-    summary = send_to_chat_gpt("Summarize this", generated_stoplight)
-    trimmed_summary = summary.replace("\n", "      ")
+def compile_overview_description(generated_stoplight, response_content):
+    summary = send_to_chat_gpt("Summarize this with a detailed explanation", generated_stoplight)
+    trimmed_summary = summary.replace("\n", "")
     pattern = r"description: .*?\n"
-    replacement = f"description: |{trimmed_summary}\n"
+    replacement = f"description: |\n      {trimmed_summary}\n"
     
-    return re.sub(pattern, replacement, generated_stoplight, count=1)
+    return re.sub(pattern, replacement, response_content, count=1)
 
 def compile_stoplight_doc(command, file_name, file_content):
     # Get the structure
@@ -69,7 +69,7 @@ def compile_stoplight_doc(command, file_name, file_content):
     response_content =  replaced_with + response_content[index:]
 
     # Compile the Overview Description
-    response_content = compile_overview_description(original_response)
+    response_content = compile_overview_description(original_response, response_content)
 
     print(f"Updated response from chat gpt:\n\n{file_name}`:\n {response_content}\n")
    
