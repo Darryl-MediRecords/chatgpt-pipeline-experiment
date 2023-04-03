@@ -1,0 +1,65 @@
+```yaml
+
+
+---
+stoplight:
+  version: 1.0
+  title: InpatientController
+  description: 
+This is a description of an API for InpatientController which has four methods: hello, helloUserInfo, helloFeign and helloFeatureToggle. Each method has different parameters and responses. The hello method has one parameter (name) and one response (status 200). The helloUserInfo method has one parameter (name) and one response (status 200). The helloFeign method has one parameter (pageable) and one response (status 200). The helloFeatureToggle method has three parameters (T, UseTag, 76b011f6-25b3-11e7-a0ea-c776ddb51c38) and one response (status 200).
+  components:
+    - type: api
+      name: InpatientController
+      description: API for InpatientController
+      methods:
+        - name: hello
+          description: Returns a greeting message
+          parameters:
+            - name: name
+              description: The name of the user
+              type: string
+              required: false
+              default: stranger
+          responses:
+            - status: 200
+              description: Successful response
+        - name: helloUserInfo
+          description: Returns a UserInfoDTO
+          parameters:
+            - name: name
+              description: The name of the user
+              type: string
+              required: false
+              default: stranger
+          responses:
+            - status: 200
+              description: Successful response
+        - name: helloFeign
+          description: Returns a pageable list of objects
+          parameters:
+            - name: pageable
+              description: The pageable list of objects
+              type: pageable
+              required: true
+          responses:
+            - status: 200
+              description: Successful response
+        - name: helloFeatureToggle
+          description: Returns a boolean value
+          parameters:
+            - name: T
+              description: Tenant
+              type: string
+              required: true
+            - name: UseTag
+              description: Tag to check
+              type: string
+              required: true
+            - name: 76b011f6-25b3-11e7-a0ea-c776ddb51c38
+              description: Unique identifier
+              type: string
+              required: true
+          responses:
+            - status: 200
+              description: Successful response
+```
