@@ -5,6 +5,7 @@ import argparse
 import openai
 import os
 import requests
+import re
 from github import Github
 
 ## Adding command-line arguments
@@ -34,7 +35,7 @@ CONTROLLER = "Controller.java"
 # file_content: a string that represents the content of the file
 # The function makes use of the OpenAI API by calling the openai.Completion.create() method.
 # The output of the function is a string that represents ChatGPT's response about the file.
-def send_to_chat_gpt(command, file_name, file_content):
+def send_to_chat_gpt(command, file_content):
     print(f"Command sent to chatgpt:\n\n{command}:\n```{file_content}```\n")
     response = openai.Completion.create(
         engine=args.openai_engine,
@@ -43,38 +44,32 @@ def send_to_chat_gpt(command, file_name, file_content):
         max_tokens=int(args.openai_max_tokens)
     )
     print(f"Raw Response: \n{response}\n")
-    response_content = f"```yaml\n{response['choices'][0]['text']}```"
+    
+    return response['choices'][0]['text']
+
+def compile_overview_description(generated_stoplight, file_content):
+    summary = send_to_chat_gpt("Summarize this", file_content)
+    pattern = r"description: .*?\n"
+    replacement = f"description: {summary}\n"
+    
+    return re.sub(pattern, replacement, generated_stoplight, count=1)
+
+def compile_stoplight_doc(command, file_name, file_content):
+    # Get the structure
+    response_content = send_to_chat_gpt(command, file_content)
+
+    response_content = f"```yaml\n{response_content}\n```"
     print(f"Result from chat gpt:\n\n{file_name}`:\n {response_content}\n")
+    
+    # Compile the Overview Description
+    response_content = compile_overview_description(response_content, file_content)
+
+    response_content = f"```yaml\n{response_content}\n```"
+    print(f"Updated response from chat gpt:\n\n{file_name}`:\n {response_content}\n")
 
     # Adding a comment to the pull request with ChatGPT's response
     pull_request.create_issue_comment(
         f"ChatGPT's response about `{file_name}`:\n {response_content}")
-    
-    return response['choices'][0]['text']
-
-def patch():
-    content = get_content_patch()
-
-    if len(content) == 0:
-        pull_request.create_issue_comment("Patch file does not contain any changes")
-        return
-
-    parsed_text = content.split("diff")
-
-    for diff_text in parsed_text:
-        if len(diff_text) == 0:
-            continue
-
-        try:
-            file_name = diff_text.split("b/")[1].splitlines()[0]
-            
-            send_to_chat_gpt("Summarize what was done in this diff", file_name, diff_text)
-            
-        except Exception as e:
-            error_message = str(e)
-            print(error_message)
-            pull_request.create_issue_comment(f"ChatGPT was unable to process the response about {file_name}")
-
 
 def get_content_patch():
     url = f"https://api.github.com/repos/{os.getenv('GITHUB_REPOSITORY')}/pulls/{args.github_pr_id}"
@@ -137,7 +132,7 @@ def create_stoplight_doc():
             is_controller = file_name.endswith(CONTROLLER)
             print(f"Contains Controller.java: {is_controller}")
             if is_controller:
-                response = send_to_chat_gpt("Generate a Stoplight documentation in raw YAML file format", file_name, diff_text)
+                response = compile_stoplight_doc("Generate a Stoplight documentation in raw YAML file format", file_name, diff_text)
                 yaml_name = file_name.replace(CONTROLLER, "")
                 file_changes.append({ "name": yaml_name, "content": response })
 
