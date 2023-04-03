@@ -61,14 +61,14 @@ def compile_stoplight_doc(command, file_name, file_content):
     response_content = f"```yaml\n{response_content}\n```"
     print(f"Result from chat gpt:\n\n{file_name}`:\n {response_content}\n")
     
+     # Polishing the response with proper metadata and format
+    response_content = re.sub(r".*paths:", f"openapi: 3.1.0\ninfo:\n    title: {file_name}\n    description: \n    version: '1.0'\nservers:\n    - url: 'http://localhost:3000'", response_content)
+
     # Compile the Overview Description
     response_content = compile_overview_description(response_content, file_content)
 
     print(f"Updated response from chat gpt:\n\n{file_name}`:\n {response_content}\n")
-
-    # Polishing the response with proper metadata and format
-    response_content = re.sub(r".*stoplight:", "openapi: 3.1.0", response_content)
-
+   
     # Adding a comment to the pull request with ChatGPT's response
     pull_request.create_issue_comment(
         f"ChatGPT's response about `{file_name}`:\n {response_content}")
