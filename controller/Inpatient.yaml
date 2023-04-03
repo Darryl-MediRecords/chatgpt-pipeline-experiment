@@ -1,0 +1,79 @@
+openapi: 3.1.0
+info:
+    title: Inpatient
+    description: |
+      
+      This OpenAPI 3.1.0 specification contains four paths: /v1/api/hello, /v1/api/helloUserInfo, /v1/api/helloFeign, and /v1/api/helloFeatureToggle. Each path has a get request that returns a different type of response, such as a string, object, or boolean. The /v1/api/hello path has a parameter called name which is optional and has a default value of 'stranger'. The /v1/api/helloUserInfo path has four object properties: userId, userName, tenantId, and tenantName. The /v1/api/helloFeign path has a parameter called pageable which is required.
+    version: '1.0'
+servers:
+    - url: 'http://localhost:3000'
+paths:
+    /v1/api/hello:
+      get:
+        summary: Get hello message
+        description: Returns a hello message
+        operationId: hello
+        parameters:
+          - name: name
+            in: query
+            description: Name of the user
+            required: false
+            type: string
+            default: stranger
+        responses:
+          200:
+            description: OK
+            schema:
+              type: string
+    /v1/api/helloUserInfo:
+      get:
+        summary: Get hello message with user info
+        description: Returns a hello message with user info
+        operationId: helloUserInfo
+        parameters:
+          - name: name
+            in: query
+            description: Name of the user
+            required: false
+            type: string
+            default: stranger
+        responses:
+          200:
+            description: OK
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                userName:
+                  type: string
+                tenantId:
+                  type: string
+                tenantName:
+                  type: string
+    /v1/api/helloFeign:
+      get:
+        summary: Get hello message with Feign
+        description: Returns a hello message with Feign
+        operationId: helloFeign
+        parameters:
+          - name: pageable
+            in: query
+            description: Pageable object
+            required: true
+            type: object
+        responses:
+          200:
+            description: OK
+            schema:
+              type: string
+    /v1/api/helloFeatureToggle:
+      get:
+        summary: Get hello message with Feature Toggle
+        description: Returns a hello message with Feature Toggle
+        operationId: helloFeatureToggle
+        responses:
+          200:
+            description: OK
+            schema:
+              type: boolean
