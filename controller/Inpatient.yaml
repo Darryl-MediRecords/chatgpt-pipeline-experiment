@@ -1,0 +1,73 @@
+```yaml
+
+
+openapi: 3.1.0
+  version: v1.0
+  title: InpatientController
+  description: 
+This is the controller for the Inpatient microservice, which has four paths: /hello, /helloUserInfo, /helloFeign, and /helloFeatureToggle. Each path has a get request with different parameters and responses. The /hello path has a parameter of "name" and responds with a greeting and user info. The /helloUserInfo path has a parameter of "name" and responds with user info. The /helloFeign path has a parameter of "pageable" and responds with data from MrappClient. The /helloFeatureToggle path has parameters of "tenant", "feature", and "tenantId" and responds with data from FeatureToggleMicroserviceClient.
+  baseUri: /v1/api
+  paths:
+    /hello:
+      get:
+        description: Get a greeting
+        parameters:
+          - name: name
+            in: query
+            type: string
+            required: false
+            default: stranger
+        responses:
+          200:
+            description: Return a greeting with user info
+          400:
+            description: Bad Request
+    /helloUserInfo:
+      get:
+        description: Get user info
+        parameters:
+          - name: name
+            in: query
+            type: string
+            required: false
+            default: stranger
+        responses:
+          200:
+            description: Return user info
+          400:
+            description: Bad Request
+    /helloFeign:
+      get:
+        description: Get data from MrappClient
+        parameters:
+          - name: pageable
+            in: query
+            type: object
+            required: true
+        responses:
+          200:
+            description: Return data from MrappClient
+          400:
+            description: Bad Request
+    /helloFeatureToggle:
+      get:
+        description: Get data from FeatureToggleMicroserviceClient
+        parameters:
+          - name: tenant
+            in: query
+            type: string
+            required: true
+          - name: feature
+            in: query
+            type: string
+            required: true
+          - name: tenantId
+            in: query
+            type: string
+            required: true
+        responses:
+          200:
+            description: Return data from FeatureToggleMicroserviceClient
+          400:
+            description: Bad Request
+```
