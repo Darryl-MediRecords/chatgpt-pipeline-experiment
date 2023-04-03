@@ -1,51 +1,76 @@
 
-
 ---
-title: InpatientController
-description: This is a controller for Inpatient.
-endpoints:
-  - name: hello
-    description: This endpoint returns a hello message.
-    method: GET
-    path: /v1/api/hello
-    parameters:
-      - name: name
-        description: The name to use in the hello message.
-        required: false
-        type: string
-        default: stranger
-    responses:
-      - description: A hello message.
-        status: 200
-  - name: helloUserInfo
-    description: This endpoint returns user info.
-    method: GET
-    path: /v1/api/helloUserInfo
-    parameters:
-      - name: name
-        description: The name to use in the hello message.
-        required: false
-        type: string
-        default: stranger
-    responses:
-      - description: User info.
-        status: 200
-  - name: helloFeign
-    description: This endpoint returns a list of items.
-    method: GET
-    path: /v1/api/helloFeign
-    parameters:
-      - name: pageable
-        description: The pageable object.
-        required: true
-        type: object
-    responses:
-      - description: A list of items.
-        status: 200
-  - name: helloFeatureToggle
-    description: This endpoint checks if a feature toggle is enabled.
-    method: GET
-    path: /v1/api/helloFeatureToggle
-    responses:
-      - description: A boolean value indicating whether the feature toggle is enabled or not.
-        status: 200
+stoplight:
+  version: v1
+  info:
+    title: InpatientController
+    description: Controller for Inpatient
+    contact:
+      name: John Doe
+      email: john.doe@example.com
+    license:
+      name: Apache 2.0
+      url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+  elements:
+    - name: hello
+      type: request
+      description: Get hello message
+      method: GET
+      url: /v1/api/hello
+      parameters:
+        - name: name
+          description: Name of the person
+          type: string
+          required: false
+          default: stranger
+      responses:
+        - code: 200
+          description: OK
+    - name: helloUserInfo
+      type: request
+      description: Get hello message
+      method: GET
+      url: /v1/api/helloUserInfo
+      parameters:
+        - name: name
+          description: Name of the person
+          type: string
+          required: false
+          default: stranger
+      responses:
+        - code: 200
+          description: OK
+    - name: helloFeign
+      type: request
+      description: Get hello message
+      method: GET
+      url: /v1/api/helloFeign
+      parameters:
+        - name: pageable
+          description: Pageable object
+          type: object
+          required: true
+      responses:
+        - code: 200
+          description: OK
+    - name: helloFeatureToggle
+      type: request
+      description: Get hello message
+      method: GET
+      url: /v1/api/helloFeatureToggle
+      parameters:
+        - name: T
+          description: Tenant
+          type: string
+          required: true
+        - name: UseTag
+          description: Tag
+          type: string
+          required: true
+        - name: 76b011f6-25b3-11e7-a0ea-c776ddb51c38
+          description: ID
+          type: string
+          required: true
+      responses:
+        - code: 200
+          description: OK
