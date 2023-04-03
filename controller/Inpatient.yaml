@@ -1,0 +1,80 @@
+openapi: 3.1.0
+info:
+    title: controller/InpatientController.java
+    description: 
+This OpenAPI 3.1.0 describes a controller called InpatientController.java which has four paths: '/hello', '/helloUserInfo', '/helloFeign', and '/helloFeatureToggle'. '/hello' returns a greeting with a given name, '/helloUserInfo' returns a UserInfoDTO, '/helloFeign' returns all entities, and '/helloFeatureToggle' returns a boolean value.
+    version: '1.0'
+servers:
+    - url: 'http://localhost:3000'
+paths:
+    /hello:
+      get:
+        description: Returns a greeting with the given name
+        parameters:
+          - name: name
+            in: query
+            type: string
+            required: false
+            default: stranger
+            description: The name to greet
+        responses:
+          200:
+            description: A greeting
+            body:
+              application/json:
+                example: Hello stranger, this is hello from Template Microservice. Tenant id: 76b011f6-25b3-11e7-a0ea-c776ddb51c38. User id: 78b011f6-25b3-11e7-a0ea-c776ddb51c38. Tenant name: MediRecords. User name: admin
+    /helloUserInfo:
+      get:
+        description: Returns a UserInfoDTO
+        parameters:
+          - name: name
+            in: query
+            type: string
+            required: false
+            default: stranger
+            description: The name to greet
+        responses:
+          200:
+            description: A UserInfoDTO
+            body:
+              application/json:
+                example: {
+                  "userId": "78b011f6-25b3-11e7-a0ea-c776ddb51c38",
+                  "userName": "admin",
+                  "tenantId": "76b011f6-25b3-11e7-a0ea-c776ddb51c38",
+                  "tenantName": "MediRecords"
+                }
+    /helloFeign:
+      get:
+        description: Returns all entities
+        parameters:
+          - name: pageable
+            in: query
+            type: pageable
+            required: true
+            description: The pageable object
+        responses:
+          200:
+            description: All entities
+            body:
+              application/json:
+                example: [
+                  {
+                    "id": 1,
+                    "name": "John Doe"
+                  },
+                  {
+                    "id": 2,
+                    "name": "Jane Smith"
+                  }
+                ]
+    /helloFeatureToggle:
+      get:
+        description: Returns the value of a feature toggle
+        responses:
+          200:
+            description: A boolean value
+            body:
+              application/json:
+                example: true
+```
