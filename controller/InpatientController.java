@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/v1/api")
+/** This controller exposes basic endpoints which to be used across different microservices */
 public class TemplateController {
     private final CurrentUserDetails currentUser;
     private final MrappClient                       mrappClient;
