@@ -1,0 +1,78 @@
+openapi: 3.1.0
+info:
+    title: Inpatient
+    description: |
+      This file is a Java class containing the code for a Template Controller which exposes basic endpoints to be used across different microservices. The first endpoint, "/hello", takes an optional "name" parameter and returns a String with information about the user including the tenant name, user name, tenant id, and user id. The second endpoint, "/helloUserInfo", takes an optional "name" parameter and returns a UserInfoDTO object with the user id, user name, tenant id, and tenant name of the user. The third endpoint, "/helloFeign", takes a Pageable object as input and returns a String with the response from the mrappClient. The fourth endpoint, "/helloFeatureToggle", takes no parameters and returns a Boolean indicating the response from the featureToggleMicroserviceClient.
+    version: '1.0'
+servers:
+    - url: 'http://localhost:3000'
+paths:
+  /v1/api/hello:
+    get:
+      summary: Get hello message
+      description: Get hello message from Template Microservice
+      operationId: hello
+      parameters:
+        - name: name
+          in: query
+          description: Name of the user
+          required: false
+          type: string
+          default: stranger
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: string
+  /v1/api/helloUserInfo:
+    get:
+      summary: Get hello message with user info
+      description: Get hello message from Template Microservice with user info
+      operationId: helloUserInfo
+      parameters:
+        - name: name
+          in: query
+          description: Name of the user
+          required: false
+          type: string
+          default: stranger
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            properties:
+              userId:
+                type: string
+              userName:
+                type: string
+              tenantId:
+                type: string
+              tenantName:
+                type: string
+  /v1/api/helloFeign:
+    get:
+      summary: Get hello message using Feign
+      description: Get hello message from Template Microservice using Feign
+      operationId: helloFeign
+      parameters:
+        - name: pageable
+          in: query
+          description: Pageable object
+          required: true
+          type: object
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: string
+  /v1/api/helloFeatureToggle:
+    get:
+      summary: Get hello message using Feature Toggle
+      description: Get hello message from Template Microservice using Feature Toggle
+      operationId: helloFeatureToggle
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: boolean
