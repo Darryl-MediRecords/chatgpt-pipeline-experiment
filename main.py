@@ -58,7 +58,6 @@ def compile_overview_description(generated_stoplight, response_content):
 def compile_stoplight_doc(command, file_name, file_content):
     # Get the structure
     response_content = send_to_chat_gpt(command, file_content)
-    original_response = response_content
     print(f"Result from chat gpt:\n\n{file_name}`:\n ```yaml\n{response_content}```\n")
     
     # Polishing the response with proper metadata and format
@@ -69,7 +68,7 @@ def compile_stoplight_doc(command, file_name, file_content):
     response_content =  replaced_with + response_content[index:]
 
     # Compile the Overview Description
-    response_content = compile_overview_description(original_response, response_content)
+    response_content = compile_overview_description(file_content, response_content)
 
     print(f"Updated response from chat gpt:\n\n{file_name}`:\n {response_content}\n")
    
@@ -121,33 +120,24 @@ def push_changed_files_to_pr(file_changes):
             )
 
 def create_stoplight_doc():
-    content = get_content_patch()
-
-    if len(content) == 0:
-        pull_request.create_issue_comment("Patch file does not contain any changes")
-        return
-
-    parsed_text = content.split("diff")
     file_changes = []
+   ## Loop through the commits in the pull request
+    commits = pull_request.get_commits()
+    for commit in commits:
+        # Getting the modified files in the commit
+        files = commit.files
+        for file in files:
+            # Getting the file name and content
+            file_name = file.filename
+            content = repo.get_contents(file_name, ref=commit.sha).decoded_content
 
-    for diff_text in parsed_text:
-        if len(diff_text) == 0:
-            continue
-
-        try:
-            file_name = diff_text.split("b/")[1].splitlines()[0]
             print(f"File name: {file_name}")
             is_controller = file_name.endswith(CONTROLLER)
             print(f"Contains Controller.java: {is_controller}")
             if is_controller:
-                response = compile_stoplight_doc("Generate a Stoplight API documentation in YAML file format", file_name, diff_text)
+                response = compile_stoplight_doc("Generate a Stoplight API documentation in YAML file format", file_name, content)
                 yaml_name = file_name.replace(CONTROLLER, "")
                 file_changes.append({ "name": yaml_name, "content": response })
-
-        except Exception as e:
-            error_message = str(e)
-            print(error_message)
-            pull_request.create_issue_comment(f"ChatGPT was unable to process the response about {error_message}")
 
     push_changed_files_to_pr(file_changes)
 
