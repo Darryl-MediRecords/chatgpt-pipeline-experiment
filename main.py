@@ -48,7 +48,7 @@ def send_to_chat_gpt(command, file_content):
     return response['choices'][0]['text']
 
 def compile_overview_description(generated_stoplight, response_content):
-    summary = send_to_chat_gpt("Summarize this with a detailed explanation", generated_stoplight)
+    summary = send_to_chat_gpt("Write an documentation summary about this file. First give me the outline, which consists of a paragraph of an overview of what it does, and several paragraphs of each endpoints with their descriptions including input and response objects", generated_stoplight)
     trimmed_summary = summary.replace("\n", "")
     pattern = r"description: .*?\n"
     replacement = f"description: |\n      {trimmed_summary}\n"
