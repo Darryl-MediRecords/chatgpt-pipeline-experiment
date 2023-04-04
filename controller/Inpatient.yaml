@@ -2,80 +2,49 @@ openapi: 3.1.0
 info:
     title: Inpatient
     description: |
-      This code is a Java class that is a RestController, meaning it is responsible for handling requests made to an API. It has five methods - hello, helloUserInfo, helloFeign, helloFeatureToggle, and helloFeatureToggleFeign. The hello method takes in a parameter called name and returns a String with the name and user and tenant information. The helloUserInfo method also takes in a name parameter and returns a UserInfoDTO object with the user and tenant information. The helloFeign method takes in a Pageable parameter and returns a String with the results of a feign client. The helloFeatureToggle method returns a Boolean value with the results of a feature toggle microservice client. The helloFeatureToggleFeign method also returns a Boolean value with the results of a feature toggle microservice client.
+      This code is for a template controller class in the Java programming language. It is used to create a RestController that handles requests from the user. It contains four methods: hello, helloUserInfo, helloFeign, and helloFeatureToggleFeign. The hello method takes in a name as a parameter and returns a string with the name, tenant id, user id, tenant name, and user name. The helloUserInfo method takes in a name and returns a UserInfoDTO object with the tenant id, user id, tenant name, and user name. The helloFeign method takes in a pageable object and returns a response entity with a list of items from the mrappClient. The helloFeatureToggleFeign method returns a response entity with a boolean value that indicates whether or not a tenant configuration is enabled using the featureToggleMicroserviceClient.
     version: '1.0'
 servers:
     - url: 'http://localhost:3000'
 paths:
-    /v1/api/hello:
-      get:
-        description: Get a hello message
-        parameters:
-          - name: name
-            in: query
-            description: The name of the person to greet
-            required: false
-            schema:
-              type: string
-              default: stranger
-        responses:
-          200:
-            description: A hello message
-            content:
-              application/json:
-                schema:
-                  type: string
-    /v1/api/helloUserInfo:
-      get:
-        description: Get user info
-        parameters:
-          - name: name
-            in: query
-            description: The name of the person to greet
-            required: false
-            schema:
-              type: string
-              default: stranger
-        responses:
-          200:
-            description: User info
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    userId:
-                      type: string
-                    userName:
-                      type: string
-                    tenantId:
-                      type: string
-                    tenantName:
-                      type: string
-    /v1/api/helloFeign:
-      get:
-        description: Get a hello message from the Feign client
-        parameters:
-          - name: pageable
-            in: query
-            description: The pageable object
-            required: true
-            schema:
-              type: object
-        responses:
-          200:
-            description: A hello message
-            content:
-              application/json:
-                schema:
-                  type: string
-    /v1/api/helloFeatureToggle:
-      get:
-        description: Get a feature toggle boolean
-        responses:
-          200:
-            description: A feature toggle boolean
-            content:
-              application/json:
-                schema:
-                  type: boolean
+  /v1/api/hello:
+    get:
+      summary: Returns a hello message
+      parameters:
+        - in: query
+          name: name
+          schema:
+            type: string
+            default: stranger
+      responses:
+        '200':
+          description: Returns a hello message
+  /v1/api/helloUserInfo:
+    get:
+      summary: Returns a hello message with user info
+      parameters:
+        - in: query
+          name: name
+          schema:
+            type: string
+            default: stranger
+      responses:
+        '200':
+          description: Returns a hello message with user info
+  /v1/api/helloFeign:
+    get:
+      summary: Returns a hello message from a feign client
+      parameters:
+        - in: query
+          name: pageable
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Returns a hello message from a feign client
+  /v1/api/helloFeatureToggle:
+    get:
+      summary: Returns the feature toggle status
+      responses:
+        '200':
+          description: Returns the feature toggle status
