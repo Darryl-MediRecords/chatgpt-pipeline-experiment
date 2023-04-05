@@ -2,51 +2,92 @@ openapi: 3.1.0
 info:
     title: Inpatient
     description: |
-      This file is the TemplateController class, which contains endpoints that provide various services to its users. The endpoints are as follows:1. hello: This endpoint takes an optional name parameter and returns a string containing the user's tenant id, user id, tenant name and user name.Input: name (optional)Response: String2. helloUserInfo: This endpoint takes an optional name parameter and returns a UserInfoDTO object containing the user's tenant id, user id, tenant name and user name.Input: name (optional)Response: UserInfoDTO3. helloFeign: This endpoint takes a pageable parameter and returns a string containing the response from the mrappClient.Input: pageableResponse: String4. helloFeatureToggle: This endpoint takes no parameters and returns a boolean indicating the value of the configuration from the featureToggleMicroserviceClient.Input: NoneResponse: Boolean
+      This file is a controller for a Template Microservice that provides endpoints to return a greeting, user info, feign client, and feature toggle.**/hello**- Input: Request Parameter (name, required=false, defaultValue="stranger")- Response: StringThis endpoint returns a greeting using the provided name, or "stranger" if no name is provided. It also returns the tenant id, user id, tenant name, and user name associated with the request.**/helloUserInfo**- Input: Request Parameter (name, required=false, defaultValue="stranger")- Response: UserInfoDTOThis endpoint returns a UserInfoDTO object containing the tenant id, user id, tenant name, and user name associated with the request.**/helloFeign**- Input: Pageable object- Response: StringThis endpoint returns a greeting using the provided name, or "stranger" if no name is provided. It also returns the tenant id, user id, tenant name, and user name associated with the request.**/helloFeatureToggle**- Input: None- Response: BooleanThis endpoint returns a boolean value indicating whether or not the tenant configuration is enabled.
     version: '1.0'
 servers:
     - url: 'http://localhost:3000'
 paths:
-    /hello:
-      get:
-        description: Returns a hello message
-        responses:
-          200:
-            description: OK
-            body:
-              application/json:
-                example:
-                  message: Hello stranger, this is hello from Template Microservice. Tenant id: 76b011f6-25b3-11e7-a0ea-c776ddb51c38. User id: 89044a7a-25b3-11e7-a0ea-c776ddb51c38. Tenant name: MediRecords. User name: John Doe
-    /helloUserInfo:
-      get:
-        description: Returns a UserInfoDTO object
-        responses:
-          200:
-            description: OK
-            body:
-              application/json:
-                example:
-                  userId: 89044a7a-25b3-11e7-a0ea-c776ddb51c38
-                  userName: John Doe
-                  tenantId: 76b011f6-25b3-11e7-a0ea-c776ddb51c38
-                  tenantName: MediRecords
-    /helloFeign:
-      get:
-        description: Returns the result of a feign call
-        responses:
-          200:
-            description: OK
-            body:
-              application/json:
-                example:
-                  result: The result of the feign call
-    /helloFeatureToggle:
-      get:
-        description: Returns the result of a feature toggle call
-        responses:
-          200:
-            description: OK
-            body:
-              application/json:
-                example:
-                  result: true
+  /hello:
+    get:
+      summary: Returns a greeting
+      description: Returns a greeting to the specified name
+      parameters:
+        - name: name
+          in: query
+          required: false
+          type: string
+          description: The name to greet
+      responses:
+        200:
+          description: Success
+          schema:
+            type: string
+            example: Hello John!
+  /helloUserInfo:
+    get:
+      summary: Returns user info
+      description: Returns user info in the form of a UserInfoDTO
+      parameters:
+        - name: name
+          in: query
+          required: false
+          type: string
+          description: The name to greet
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+            properties:
+              userId:
+                type: string
+                example: 12345
+              userName:
+                type: string
+                example: John
+              tenantId:
+                type: string
+                example: 67890
+              tenantName:
+                type: string
+                example: Acme
+  /helloFeign:
+    get:
+      summary: Returns data from a Feign client
+      description: Returns data from a Feign client
+      parameters:
+        - name: pageable
+          in: query
+          required: true
+          type: object
+          description: Pageable object
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+  /helloFeatureToggle:
+    get:
+      summary: Returns the result of a feature toggle
+      description: Returns the result of a feature toggle
+      parameters:
+        - name: tenant
+          in: query
+          required: true
+          type: string
+          description: The tenant to check
+        - name: feature
+          in: query
+          required: true
+          type: string
+          description: The feature to check
+        - name: tenantId
+          in: query
+          required: true
+          type: string
+          description: The tenantId to check
+      responses:
+        200:
+          description: Success
+          schema:
+            type: boolean
