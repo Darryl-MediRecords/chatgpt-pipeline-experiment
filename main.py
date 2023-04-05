@@ -47,29 +47,36 @@ def send_to_chat_gpt(command, file_content):
     
     return response['choices'][0]['text']
 
-def compile_overview_description(generated_stoplight, file_content):
-    summary = send_to_chat_gpt("Summarize this", file_content)
+def compile_overview_description(generated_stoplight, response_content):
+    summary = send_to_chat_gpt("Write an documentation summary about this file. First give me the outline, which consists of a paragraph of an overview of what it does, and several paragraphs of each endpoints with their descriptions including input and response objects", generated_stoplight)
+    trimmed_summary = summary.replace("\n", "")
     pattern = r"description: .*?\n"
-    replacement = f"description: {summary}\n"
+    replacement = f"description: |\n      {trimmed_summary}\n"
     
-    return re.sub(pattern, replacement, generated_stoplight, count=1)
+    return re.sub(pattern, replacement, response_content, count=1)
 
 def compile_stoplight_doc(command, file_name, file_content):
     # Get the structure
     response_content = send_to_chat_gpt(command, file_content)
-
-    response_content = f"```yaml\n{response_content}\n```"
-    print(f"Result from chat gpt:\n\n{file_name}`:\n {response_content}\n")
+    print(f"Result from chat gpt:\n\n{file_name}`:\n ```yaml\n{response_content}```\n")
     
+    # Polishing the response with proper metadata and format
+    sections = file_name.split("/")
+    title = sections[len(sections) - 1].replace(CONTROLLER, "")
+    index = response_content.index("paths:")
+    replaced_with = f"openapi: 3.1.0\ninfo:\n    title: {title}\n    description: \n    version: '1.0'\nservers:\n    - url: 'http://localhost:3000'\n"
+    response_content =  replaced_with + response_content[index:]
+
     # Compile the Overview Description
-    response_content = compile_overview_description(response_content, file_content)
+    response_content = compile_overview_description(file_content, response_content)
 
-    response_content = f"```yaml\n{response_content}\n```"
     print(f"Updated response from chat gpt:\n\n{file_name}`:\n {response_content}\n")
-
+   
     # Adding a comment to the pull request with ChatGPT's response
     pull_request.create_issue_comment(
-        f"ChatGPT's response about `{file_name}`:\n {response_content}")
+        f"ChatGPT's response about `{file_name}`:\n ```yaml\n{response_content}\n```")
+
+    return response_content
 
 def get_content_patch():
     url = f"https://api.github.com/repos/{os.getenv('GITHUB_REPOSITORY')}/pulls/{args.github_pr_id}"
@@ -113,37 +120,27 @@ def push_changed_files_to_pr(file_changes):
             )
 
 def create_stoplight_doc():
-    content = get_content_patch()
-
-    if len(content) == 0:
-        pull_request.create_issue_comment("Patch file does not contain any changes")
-        return
-
-    parsed_text = content.split("diff")
     file_changes = []
+   ## Loop through the commits in the pull request
+    commits = pull_request.get_commits()
+    for commit in commits:
+        # Getting the modified files in the commit
+        files = commit.files
+        for file in files:
+            # Getting the file name and content
+            file_name = file.filename
+            content = repo.get_contents(file_name, ref=commit.sha).decoded_content
 
-    for diff_text in parsed_text:
-        if len(diff_text) == 0:
-            continue
-
-        try:
-            file_name = diff_text.split("b/")[1].splitlines()[0]
             print(f"File name: {file_name}")
             is_controller = file_name.endswith(CONTROLLER)
             print(f"Contains Controller.java: {is_controller}")
             if is_controller:
-                response = compile_stoplight_doc("Generate a Stoplight documentation in raw YAML file format", file_name, diff_text)
+                response = compile_stoplight_doc("Generate a Stoplight API documentation in YAML file format", file_name, content)
                 yaml_name = file_name.replace(CONTROLLER, "")
                 file_changes.append({ "name": yaml_name, "content": response })
-
-        except Exception as e:
-            error_message = str(e)
-            print(error_message)
-            pull_request.create_issue_comment(f"ChatGPT was unable to process the response about {error_message}")
 
     push_changed_files_to_pr(file_changes)
 
 print("main.py is running")
 
-# patch()
 create_stoplight_doc()
