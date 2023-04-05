@@ -1,94 +1,52 @@
-
-
----
-stoplight:
-  version: 0.1.0
-  info:
-    title: InpatientController
-    description: Controller for inpatient related operations
-    termsOfService: https://example.com/terms
-    contact:
-      name: MediRecords
-      email: info@medirecords.com
-    license:
-      name: Apache 2.0
-      url: https://www.apache.org/licenses/LICENSE-2.0.html
-  servers:
-    - url: https://api.medirecords.com/v1/api
-  paths:
+openapi: 3.1.0
+info:
+    title: Inpatient
+    description: |
+      This file is the TemplateController class, which contains endpoints that provide various services to its users. The endpoints are as follows:1. hello: This endpoint takes an optional name parameter and returns a string containing the user's tenant id, user id, tenant name and user name.Input: name (optional)Response: String2. helloUserInfo: This endpoint takes an optional name parameter and returns a UserInfoDTO object containing the user's tenant id, user id, tenant name and user name.Input: name (optional)Response: UserInfoDTO3. helloFeign: This endpoint takes a pageable parameter and returns a string containing the response from the mrappClient.Input: pageableResponse: String4. helloFeatureToggle: This endpoint takes no parameters and returns a boolean indicating the value of the configuration from the featureToggleMicroserviceClient.Input: NoneResponse: Boolean
+    version: '1.0'
+servers:
+    - url: 'http://localhost:3000'
+paths:
     /hello:
       get:
-        summary: Get hello message
-        parameters:
-          - name: name
-            in: query
-            description: Name to greet
-            required: false
-            schema:
-              type: string
-              default: stranger
+        description: Returns a hello message
         responses:
           200:
-            description: Greeting message
-            content:
+            description: OK
+            body:
               application/json:
-                schema:
-                  type: string
+                example:
+                  message: Hello stranger, this is hello from Template Microservice. Tenant id: 76b011f6-25b3-11e7-a0ea-c776ddb51c38. User id: 89044a7a-25b3-11e7-a0ea-c776ddb51c38. Tenant name: MediRecords. User name: John Doe
     /helloUserInfo:
       get:
-        summary: Get user information
-        parameters:
-          - name: name
-            in: query
-            description: Name to greet
-            required: false
-            schema:
-              type: string
-              default: stranger
+        description: Returns a UserInfoDTO object
         responses:
           200:
-            description: User information
-            content:
+            description: OK
+            body:
               application/json:
-                schema:
-                  $ref: '#/components/schemas/UserInfoDTO'
+                example:
+                  userId: 89044a7a-25b3-11e7-a0ea-c776ddb51c38
+                  userName: John Doe
+                  tenantId: 76b011f6-25b3-11e7-a0ea-c776ddb51c38
+                  tenantName: MediRecords
     /helloFeign:
       get:
-        summary: Get data from MRApp
-        parameters:
-          - name: pageable
-            in: query
-            description: Pageable query
-            required: true
-            schema:
-              type: string
+        description: Returns the result of a feign call
         responses:
           200:
-            description: Data from MRApp
-            content:
+            description: OK
+            body:
               application/json:
-                schema:
-                  type: string
+                example:
+                  result: The result of the feign call
     /helloFeatureToggle:
       get:
-        summary: Check feature toggle
+        description: Returns the result of a feature toggle call
         responses:
           200:
-            description: Feature toggle status
-            content:
+            description: OK
+            body:
               application/json:
-                schema:
-                  type: boolean
-components:
-  schemas:
-    UserInfoDTO:
-      type: object
-      properties:
-        userId:
-          type: string
-        userName:
-          type: string
-        tenantId:
-          type: string
-        tenantName:
-          type: string
+                example:
+                  result: true
