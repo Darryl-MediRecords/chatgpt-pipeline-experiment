@@ -2,92 +2,88 @@ openapi: 3.1.0
 info:
     title: Inpatient
     description: |
-      This file is a controller for a Template Microservice that provides endpoints to return a greeting, user info, feign client, and feature toggle.**/hello**- Input: Request Parameter (name, required=false, defaultValue="stranger")- Response: StringThis endpoint returns a greeting using the provided name, or "stranger" if no name is provided. It also returns the tenant id, user id, tenant name, and user name associated with the request.**/helloUserInfo**- Input: Request Parameter (name, required=false, defaultValue="stranger")- Response: UserInfoDTOThis endpoint returns a UserInfoDTO object containing the tenant id, user id, tenant name, and user name associated with the request.**/helloFeign**- Input: Pageable object- Response: StringThis endpoint returns a greeting using the provided name, or "stranger" if no name is provided. It also returns the tenant id, user id, tenant name, and user name associated with the request.**/helloFeatureToggle**- Input: None- Response: BooleanThis endpoint returns a boolean value indicating whether or not the tenant configuration is enabled.
+      This file is a controller class for a template microservice. It consists of four endpoints that provide different functionalities. The first endpoint is `/hello`, which takes an optional name parameter and returns a response with a greeting to the user, along with the tenant id, user id, tenant name, and user name of the current user. The second endpoint is `/helloUserInfo`, which takes an optional name parameter and returns a response with a UserInfoDTO object containing the tenant id, user id, tenant name, and user name of the current user. The third endpoint is `/helloFeign`, which takes a Pageable parameter and returns a response with the result of a request to a feign client. The fourth endpoint is `/helloFeatureToggle`, which takes no parameters and returns a response with the result of a request to a feature toggle microservice client.
     version: '1.0'
 servers:
     - url: 'http://localhost:3000'
 paths:
-  /hello:
+  /v1/api/hello:
     get:
-      summary: Returns a greeting
-      description: Returns a greeting to the specified name
+      summary: Get the hello message
+      description: Get the hello message from the Template Microservice
       parameters:
         - name: name
           in: query
+          description: Name of the user
           required: false
-          type: string
-          description: The name to greet
-      responses:
-        200:
-          description: Success
           schema:
             type: string
-            example: Hello John!
-  /helloUserInfo:
+            default: stranger
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: string
+  /v1/api/helloUserInfo:
     get:
-      summary: Returns user info
-      description: Returns user info in the form of a UserInfoDTO
+      summary: Get the hello user info
+      description: Get the hello user info from the Template Microservice
       parameters:
         - name: name
           in: query
+          description: Name of the user
           required: false
-          type: string
-          description: The name to greet
-      responses:
-        200:
-          description: Success
           schema:
-            type: object
-            properties:
-              userId:
-                type: string
-                example: 12345
-              userName:
-                type: string
-                example: John
-              tenantId:
-                type: string
-                example: 67890
-              tenantName:
-                type: string
-                example: Acme
-  /helloFeign:
+            type: string
+            default: stranger
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInfoDTO'
+  /v1/api/helloFeign:
     get:
-      summary: Returns data from a Feign client
-      description: Returns data from a Feign client
+      summary: Get the hello Feign message
+      description: Get the hello Feign message from the Template Microservice
       parameters:
         - name: pageable
           in: query
-          required: true
-          type: object
           description: Pageable object
-      responses:
-        200:
-          description: Success
+          required: true
           schema:
             type: object
-  /helloFeatureToggle:
-    get:
-      summary: Returns the result of a feature toggle
-      description: Returns the result of a feature toggle
-      parameters:
-        - name: tenant
-          in: query
-          required: true
-          type: string
-          description: The tenant to check
-        - name: feature
-          in: query
-          required: true
-          type: string
-          description: The feature to check
-        - name: tenantId
-          in: query
-          required: true
-          type: string
-          description: The tenantId to check
       responses:
-        200:
+        '200':
           description: Success
-          schema:
-            type: boolean
+          content:
+            application/json:
+              schema:
+                type: string
+  /v1/api/helloFeatureToggle:
+    get:
+      summary: Get the hello feature toggle message
+      description: Get the hello feature toggle message from the Template Microservice
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: boolean
+components:
+  schemas:
+    UserInfoDTO:
+      type: object
+      properties:
+        userId:
+          type: string
+        userName:
+          type: string
+        tenantId:
+          type: string
+        tenantName:
+          type: string
