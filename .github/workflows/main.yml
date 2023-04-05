@@ -10,10 +10,10 @@ on:
 jobs:
   chatgpt-analysis: # Define the job
     runs-on: ubuntu-latest # Specify the runner to run the job on
-    name: ChatGPT explain code # Job name
+    name: ChatGPT Stoplight Generation # Job name
     steps:
-      - name: ChatGPT explain code # Step name
-        uses: Darryl-MediRecords/chatgpt-pipeline-experiment@1.0.40
+      - name: ChatGPT Stoplight Generation # Step name
+        uses: Darryl-MediRecords/chatgpt-pipeline-experiment@1.0.41
         with:
           openai_api_key: ${{ secrets.OPENAI_API_KEY }} # Get the OpenAI API key from repository secrets
           github_token: ${{ secrets.DARRYL_GITHUB_TOKEN }} # Get the Github Token from repository secrets
