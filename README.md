@@ -1,6 +1,6 @@
 # ChatGPT Pipeline Experiment (Generation of Stoplight Doc on PR)
 
-This project aims to automate code review using the ChatGPT language model. It integrates  with Github Actions, and upon receiving a Pull Request, it automatically detects a *Controller.java file and uses ChatGPT to generate a stoplight api doc in yaml format.
+This project aims to automate stoplight generation using the ChatGPT language model. It integrates  with Github Actions, and upon receiving a Pull Request, it automatically detects a *Controller.java file and uses ChatGPT to generate a stoplight api doc in yaml format.
 
 # Setup
 The following steps will guide you in setting up the stoplight doc generation with ChatGPT.
